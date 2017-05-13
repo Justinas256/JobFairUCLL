@@ -1,0 +1,35 @@
+@CHARSET "ISO-8859-1";
+
+th,td {
+	padding: 0.6em 1.2em 0 0;
+	text-align: left;
+	vertical-align: top;
+}
+.h1-normal
+{
+	margin:0
+}
+.bordboth4
+{
+	display: block;
+    width: 100%;
+    padding: 0;
+    margin-bottom: 20px;
+    font-size: 21px;
+    line-height: inherit;
+    color: #333;
+    border: 0;
+    border-bottom: 1px solid #e5e5e5;
+}
+legend{
+    margin-top: 10px; 
+}
+main {
+    min-height: calc(100% - 150px);
+}
+footer {
+    
+    margin-top: 20px;
+  padding: 1em;
+  background-color: #efefef;
+}
