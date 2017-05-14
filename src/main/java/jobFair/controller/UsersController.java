@@ -7,6 +7,7 @@ package jobFair.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import jobFair.model.RoleEnum;
 import jobFair.model.Users;
 import jobFair.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,16 +43,17 @@ public class UsersController {
         } else {
             user.generateUserId(user.getCompanyName());
             tempPass = user.generatePassword();
+            user.setRole(RoleEnum.COMPANY.toString());
             usersService.save(user);
             String succes = "Het bedrijf " + user.getCompanyName() + " is toegevoegd.";
             request.setAttribute("success", succes);
             /*try {
-                new EmailSender().sendNewCompanyMail(user.getUsername(), tempPass, user.getEmail());
+                new EmailSender().sendNewCompanyMail(user.getUserID(), tempPass, user.getEmail());
             } catch (MessagingException e) {
 		throw new ServletException(e.getMessage(), e);
             }*/
 	
-            return "signupuser";
+            return "admin";
         }
     }
 

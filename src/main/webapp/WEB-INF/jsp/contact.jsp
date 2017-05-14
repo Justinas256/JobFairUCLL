@@ -14,7 +14,7 @@
                 <legend>Vragen / Opmerkingen</legend>
                 <div class="form-group">
                         <label for="subject">Onderwerp * </label>
-                        <form:input class="form-control" type="text" name="subject" placeholder="Onderwerp" />
+                        <form:input class="form-control" type="text" name="subject" placeholder="Onderwerp"/>
                 </div>
                 <div class="form-group">
                         <label for="name">Naam * </label>
@@ -22,7 +22,7 @@
                 </div>
                 <div class="form-group">
                         <label for="message">Je bericht * </label>
-                        <form:textarea class="form-control" name="message" class="form-control" rows="3" placeholder="Vragen / Opmerkingen">${msg}</form:textarea>
+                        <form:textarea class="form-control" name="message" class="form-control" rows="3" placeholder="Vragen / Opmerkingen"></form:textarea>
                 </div>
                 <div class="form-group">
                         <div class="g-recaptcha" data-sitekey="6LftmQ4UAAAAAH1SFuSsQkbU9BYViukh6HjUvcqr"></div>
