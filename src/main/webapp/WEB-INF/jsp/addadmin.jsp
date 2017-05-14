@@ -12,7 +12,7 @@
 	
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6">
-        <form:form method="POST" action="addadmin" commandName="admin" modelAttibute="admin">
+        <form:form method="POST" action="signupadmin" commandName="admin" modelAttibute="admin">
             <legend>Nieuwe beheerder toevoegen</legend>
             <form:errors path="*" modelAttibute="errors"/>
             <td><form:hidden path="id" /></td>

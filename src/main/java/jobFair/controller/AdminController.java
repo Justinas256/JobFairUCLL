@@ -5,6 +5,7 @@
  */
 package jobFair.controller;
 
+import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import jobFair.model.Users;
@@ -19,6 +20,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 import javax.mail.MessagingException;
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  *
@@ -37,28 +41,31 @@ public class AdminController {
     }
     
     @PostMapping("/signupadmin")
-    public String saveAdmin(@ModelAttribute("admin") @Valid Users user, BindingResult bindingResult, HttpServletRequest request) throws ServletException {  
+    public String saveAdmin(@ModelAttribute("admin") @Valid Users user, BindingResult bindingResult, RedirectAttributes redirectAttributes) throws ServletException {  
         String tempPass;
         if (bindingResult.hasErrors()) {
-            request.setAttribute("errors", bindingResult);
             return "addadmin";
         } else {      
             user.setRole("ADMIN");
             tempPass = user.generatePassword();
-            ///user.setCompanyName("admin"); //delete this after validation
+            user.setCompanyName("admin"); //delete this after validation
             usersService.save(user);
             String success = "De beheerder " + user.getUsername()+ " is toegevoegd.";
-            request.setAttribute("success", success);
+            redirectAttributes.addFlashAttribute("success", success);
             /*try {
                 new EmailSender().sendNewAdminMail(user.getUsername(), tempPass, user.getEmail());
             } catch (MessagingException e) {
                 throw new ServletException(e.getMessage(), e);
             }*/
-            return "admin";
+            return "redirect:/admin";
         }
-        
-			
-
     }
-    
+          
+    @GetMapping("/deleteadminform")
+    public ModelAndView deleteAdmin() {
+        ModelAndView modelAndView = new ModelAndView("deleteAdmin");
+        modelAndView.addObject("admins", usersService.getAdmins());
+        return modelAndView;
+    }	
+
 }

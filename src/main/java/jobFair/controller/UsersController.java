@@ -29,12 +29,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
-<<<<<<< HEAD
-import javax.mail.MessagingException;
-import javax.servlet.ServletException;
-=======
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
->>>>>>> origin/master
 
 /**
  *
@@ -54,7 +49,7 @@ public class UsersController {
     }
     
     @PostMapping("/saveuser")
-    public String saveUser(@ModelAttribute("users") @Valid Users user, BindingResult bindingResult, HttpServletRequest request) throws ServletException{  
+    public String saveUser(@ModelAttribute("users") @Valid Users user, BindingResult bindingResult, RedirectAttributes redirectAttributes) throws ServletException{  
         String tempPass;
         if (bindingResult.hasErrors()) {
             return "signupuser";
@@ -64,7 +59,7 @@ public class UsersController {
             user.setRole(RoleEnum.COMPANY.toString());
             usersService.save(user);
             String succes = "Het bedrijf " + user.getCompanyName() + " is toegevoegd.";
-            request.setAttribute("success", succes);
+            redirectAttributes.addFlashAttribute("success", succes);
             /*try {
                 new EmailSender().sendNewCompanyMail(user.getUsername(), tempPass, user.getEmail());
             } catch (MessagingException e) {
@@ -76,26 +71,6 @@ public class UsersController {
     }
     
     @PostMapping("/saveuserscvs")
-<<<<<<< HEAD
-    public String saveUserCvs(@ModelAttribute("users") @Valid Users user, BindingResult bindingResult, HttpServletRequest request) throws ServletException {  
-        String tempPass;
-        if (bindingResult.hasErrors()) {
-            return "signupuser";
-        } else {
-            user.generateUserId(user.getCompanyName());
-            tempPass = user.generatePassword();
-            user.setRole(RoleEnum.COMPANY.toString());
-            usersService.save(user);
-            String succes = "Het bedrijf " + user.getCompanyName() + " is toegevoegd.";
-            request.setAttribute("success", succes);
-            /*try {
-                new EmailSender().sendNewCompanyMail(user.getUsername(), tempPass, user.getEmail());
-            } catch (MessagingException e) {
-		throw new ServletException(e.getMessage(), e);
-            }*/
-	
-            return "signup";
-=======
     public String saveUserCvs(Model model, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, Exception {  
         Part filePart = request.getPart("file"); // Retrieves <input type="file" name="file">
 	List<String> errors = new ArrayList<>();
@@ -111,7 +86,6 @@ public class UsersController {
             model.addAttribute("errors", errors);
         } else {
             request.setAttribute("success", "De bedrijven werden toegevoegd.");
->>>>>>> origin/master
         }
         return "admin";
     }
