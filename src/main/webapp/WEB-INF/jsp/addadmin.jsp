@@ -12,23 +12,24 @@
 	
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6">
-        <form:form method="POST" action="addadmin" modelAttibute="admin">
+        <form:form method="POST" action="addadmin" commandName="admin" modelAttibute="admin">
             <legend>Nieuwe beheerder toevoegen</legend>
             <form:errors path="*" modelAttibute="errors"/>
+            <td><form:hidden path="id" /></td>
             <div class="form-group">
                     <label for="username">Gebruikersnaam: </label>
-                    <form:input path="username" type="text" class="form-control" id="username" name="username" value='<c:out value="${prevID}"></c:out>'>
+                    <form:input path="username" type="text" class="form-control" id="username" name="username" />
             </div>
             <div class="form-group">
                     <label for="contactName">Naam: </label>
-                    <form:input path="contactName" type="text" class="form-control" id="contactName" name="contactName" value='<c:out value="${prevContactName}"></c:out>'>
+                    <form:input path="contactName" type="text" class="form-control" id="contactName" name="contactName" />
             </div>
             <div class="form-group">
                     <label for="email">Email: </label>
-                    <form:input path="email" type="text" class="form-control" id="email" name="email" value='<c:out value="${prevEmail}"></c:out>'>
+                    <form:input path="email" type="text" class="form-control" id="email" name="email" />
             </div>
             <div class="form-group">
-                    <form:input type="submit" class="btn btn-primary" value="Beheerder toevoegen">
+                    <button type="submit" class="btn btn-primary" id="submit" value="Beheerder toevoegen"> Beheerder toevoegen </button>
             </div>
         </form:form>
     </div>

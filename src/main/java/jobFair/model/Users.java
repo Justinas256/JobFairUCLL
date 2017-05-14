@@ -20,6 +20,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import jobFair.validation.NotNullIfAnotherFieldHasValue;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -27,11 +28,12 @@ import org.hibernate.validator.constraints.NotEmpty;
  *
  * @author justinas
  */
+
 /*@NotNullIfAnotherFieldHasValue.List({
-    @NotNullIfAnotherFieldHasValue(
-        fieldName = "role",
-        fieldValue = "ADMIN",
-        dependFieldName = "companyName")
+@NotNullIfAnotherFieldHasValue(
+    fieldName = "role",
+    fieldValue = "ADMIN",
+    dependFieldName = "companyName")
 })*/
 @Entity
 public class Users implements Serializable {
@@ -46,7 +48,6 @@ public class Users implements Serializable {
     private String contactName;
     
     @Column
-    @NotEmpty(message="Gelieve een bedrijfsnaam op te geven.")
     private String companyName;
     
     @Column

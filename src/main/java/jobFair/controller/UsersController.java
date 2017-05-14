@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import jobFair.model.RoleEnum;
 import jobFair.model.Users;
+import jobFair.model.EmailSender;
 import jobFair.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+import javax.mail.MessagingException;
+import javax.servlet.ServletException;
 
 /**
  *
@@ -36,7 +39,7 @@ public class UsersController {
     }
     
     @PostMapping("/saveuser")
-    public String saveUser(@ModelAttribute("users") @Valid Users user, BindingResult bindingResult, HttpServletRequest request) {  
+    public String saveUser(@ModelAttribute("users") @Valid Users user, BindingResult bindingResult, HttpServletRequest request) throws ServletException{  
         String tempPass;
         if (bindingResult.hasErrors()) {
             return "signupuser";
@@ -53,12 +56,12 @@ public class UsersController {
 		throw new ServletException(e.getMessage(), e);
             }*/
 	
-            return "admin";
+            return "redirect:/admin";
         }
     }
     
     @PostMapping("/saveuserscvs")
-    public String saveUserCvs(@ModelAttribute("users") @Valid Users user, BindingResult bindingResult, HttpServletRequest request) {  
+    public String saveUserCvs(@ModelAttribute("users") @Valid Users user, BindingResult bindingResult, HttpServletRequest request) throws ServletException {  
         String tempPass;
         if (bindingResult.hasErrors()) {
             return "signupuser";
@@ -75,7 +78,7 @@ public class UsersController {
 		throw new ServletException(e.getMessage(), e);
             }*/
 	
-            return "admin";
+            return "signup";
         }
     }
 

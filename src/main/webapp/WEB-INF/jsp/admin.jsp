@@ -45,7 +45,7 @@
 		<h4 class="bordboth4"><i class="fa fa-wrench"></i> Bedrijf Manager</h4>
 		<p>Deze tool geeft je de mogelijkheid om bedrijven toe te voegen en te verwijderen.
 				Na afloop van de jobbeurs kunnen ook alle bedrijven verwijderd worden.</p>
-		<a class="btn btn-primary" href = "Controller?action=gotosignup">Voeg Bedrijf toe</a>
+		<a class="btn btn-primary" href = "signup">Voeg Bedrijf toe</a>
 		<a class="btn btn-danger" href = "Controller?action=getBedrijven">Verwijder Bedrijf</a>
 		<a class="btn btn-danger" href="confirmdeleteAll.jsp">Verwijder alle Bedrijven</a>
 	</div>

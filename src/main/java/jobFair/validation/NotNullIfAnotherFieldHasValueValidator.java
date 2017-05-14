@@ -5,14 +5,9 @@
  */
 package jobFair.validation;
 
-import java.lang.reflect.InvocationTargetException;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-import org.springframework.beans.BeanUtils;
-
+import org.springframework.beans.BeanWrapperImpl;
 /**
  *
  * @author GreKar
@@ -38,22 +33,18 @@ public class NotNullIfAnotherFieldHasValueValidator
             return true;
         }
 
-        /*try {
-            String fieldValue       = BeanUtils.getProperty(value, fieldName);
-            String dependFieldValue = BeanUtils.getProperty(value, dependFieldName);
+        BeanWrapperImpl wrapper = new BeanWrapperImpl(value);
+        String fieldValue = wrapper.getPropertyValue(fieldName).toString();
+        String dependFieldValue = wrapper.getPropertyValue(dependFieldName).toString();
 
-            if (expectedFieldValue.equals(fieldValue) && dependFieldValue == null) {
-                ctx.disableDefaultConstraintViolation();
-                ctx.buildConstraintViolationWithTemplate(ctx.getDefaultConstraintMessageTemplate())
-                    .addNode(dependFieldName)
-                    .addConstraintViolation();
-                    return false;
-            }
-
-        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
-            throw new RuntimeException(ex);
-        }*/
-
+        if (expectedFieldValue.equals(fieldValue) && dependFieldValue == null) {
+            ctx.disableDefaultConstraintViolation();
+            ctx.buildConstraintViolationWithTemplate(ctx.getDefaultConstraintMessageTemplate())
+                .addNode(dependFieldName)
+                .addConstraintViolation();
+                return false;
+        }
+        
         return true;
     }
 
