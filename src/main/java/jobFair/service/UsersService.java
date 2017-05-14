@@ -6,6 +6,7 @@
 package jobFair.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
@@ -92,4 +93,11 @@ public class UsersService {
             this.save(user);
         }
     }
+    
+    public List<Users> getCompaniesOrdered() {
+        List<Users> users = this.findAll();
+        Collections.sort(users, (Users p1, Users p2) -> p1.getCompanyName().compareTo(p2.getCompanyName()));
+        return users;
+    }
+    
 }
