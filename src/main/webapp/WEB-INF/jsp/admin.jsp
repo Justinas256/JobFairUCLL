@@ -11,6 +11,7 @@
 <div class="row">
 	<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6">
 		<form method="POST" action="Controller?action=upload" enctype="multipart/form-data">
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 			<legend><i class="fa fa-upload"></i> Bedrijven importeren</legend>
 			<div class="form-group form-inline">
 				<p>Gebruik deze tool om meerdere bedrijven tegelijk te importeren uit een '.csv' bestand.</p>
