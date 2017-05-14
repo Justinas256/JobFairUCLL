@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  *
@@ -30,22 +31,22 @@ public class DeadlineController {
     private JobFairDataService jobFairDataService;
     
     @PostMapping("/setdeadline")
-    public String setDeadline(@RequestParam("date") String date, Model model) {
+    public String setDeadline(@RequestParam("date") String date, Model model, RedirectAttributes redirectAttributes) {
         List<String> errors = new ArrayList<>();
         
         StringToCalendar toCalendar = new StringToCalendar(date);
         Date deadline = toCalendar.getDateFormat(errors);
         
         if (errors.size() > 0) {
-            model.addAttribute("errors", errors);
+            redirectAttributes.addFlashAttribute("errors", errors);
         } else {
             jobFairDataService.updateDeadline(deadline);
             String dateStr = new SimpleDateFormat("EEEE").format(deadline) + " "
                 + new SimpleDateFormat("dd").format(deadline) + " "
                 + new SimpleDateFormat("MMMM").format(deadline) + " "
                 + new SimpleDateFormat("yyyy").format(deadline);
-            model.addAttribute("success", "Je hebt de deadline gewijzigd naar: " + dateStr); 
+            redirectAttributes.addFlashAttribute("success", "Je hebt de deadline gewijzigd naar: " + dateStr); 
         }
-        return "admin";
+        return "redirect:/admin";
     }
 }
