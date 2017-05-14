@@ -19,6 +19,7 @@ import javax.validation.Valid;
 import jobFair.model.RoleEnum;
 import jobFair.model.Users;
 import jobFair.model.EmailSender;
+import jobFair.service.SpotService;
 import jobFair.service.UsersService;
 import jobFair.utils.CsvReader;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,9 @@ public class UsersController {
     
     @Autowired
     private UsersService usersService;
+    
+    @Autowired
+    private SpotService spotService;
     
     @GetMapping("/signup")
     public ModelAndView signUpUser() {
@@ -90,5 +94,22 @@ public class UsersController {
         return "admin";
     }
     
+    @GetMapping("/confirmdeleteallusers")
+    public ModelAndView signUpAdmin() {
+        return new ModelAndView("deleteallusers");
+    }
+    
+    @PostMapping("/dropusers")
+    public String dropUsers(HttpServletRequest request) {
+        String action = request.getParameter("submit");
+
+        if(action.equals("ja")){
+            spotService.removeAllUsersFromSpots();
+            usersService.deleteAll();
+            return "redirect:/";
+        } else {
+            return "redirect:/admin";
+        }
+    }
 
 }

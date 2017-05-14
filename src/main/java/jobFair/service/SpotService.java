@@ -85,4 +85,17 @@ public class SpotService {
         Collections.sort(spots, (Spot p1, Spot p2) -> p1.getSpotNo().compareTo(p2.getSpotNo()));
         return spots;
     }
+    
+    public void removeAllUsersFromSpots()
+    {
+        List<Spot> spots = this.takenSpots();
+        for(Spot spot: spots) {
+           spot.setChairs(2);
+           spot.setTables(2);
+           spot.setElectricity(true);
+           spot.setRemarks(null);
+           spot.setUser(null);
+           repository.save(spot);
+        }
+    }
 }

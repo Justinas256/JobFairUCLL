@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import jobFair.dao.UsersRepository;
+import jobFair.model.RoleEnum;
 import jobFair.model.Spot;
 import jobFair.model.Users;
 import org.springframework.stereotype.Service;
@@ -78,8 +79,13 @@ public class UsersService {
     }
      
     public List<Users> getAdmins() {     
-        List<Users> admins = this.findAll().stream().filter(u -> "ADMIN".equals(u.getRole())).collect(Collectors.toList());
+        List<Users> admins = this.findAll().stream().filter(u -> RoleEnum.ADMIN.toString().equals(u.getRole())).collect(Collectors.toList());
         return admins;
+    }
+    
+    public List<Users> getCompanies() {     
+        List<Users> companies = this.findAll().stream().filter(u -> RoleEnum.COMPANY.toString().equals(u.getRole())).collect(Collectors.toList());
+        return companies;
     }
     
     public List<String> getAllAdminEmails() {
@@ -92,4 +98,15 @@ public class UsersService {
             this.save(user);
         }
     }
+    
+    public List<Users> getAllCompaniesAlphabeticallyOnCompany() {
+        List<Users> companies = this.getCompanies().stream().sorted((user1, user2) -> user1.getCompanyName().compareTo(user2.getCompanyName())).collect(Collectors.toList());
+        return companies;
+    }
+    
+    public void deleteAll()
+    {
+        repository.deleteAll();
+    }
+
 }
