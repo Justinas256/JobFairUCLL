@@ -7,6 +7,7 @@ package jobFair.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import jobFair.dao.UsersRepository;
 import jobFair.model.Spot;
@@ -76,4 +77,13 @@ public class UsersService {
         return noSpotUsers;
     }
      
+    public List<Users> getAdmins() {     
+        List<Users> admins = this.findAll().stream().filter(u -> "ADMIN".equals(u.getRole())).collect(Collectors.toList());
+        return admins;
+    }
+    
+    public List<String> getAllAdminEmails() {
+	List<String> emails = getAdmins().stream().map(Users::getEmail).collect(Collectors.toList());	
+        return emails;
+    }
 }

@@ -57,7 +57,7 @@
                              <li id="${param.admin}"><a href="admin"><i class="fa fa-cog"></i> Admin Tools</a></li>
                         </sec:authorize>
 
-                        <li> <a href="Controller?action=contact"><i class="fa fa-info-circle"> </i> Contact</a></li>
+                        <li> <a href="contact"><i class="fa fa-info-circle"> </i> Contact</a></li>
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right">	

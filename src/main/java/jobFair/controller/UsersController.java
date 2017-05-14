@@ -46,7 +46,7 @@ public class UsersController {
             String succes = "Het bedrijf " + user.getCompanyName() + " is toegevoegd.";
             request.setAttribute("success", succes);
             /*try {
-                new EmailSender().sendNewCompanyMail(user.getUserID(), tempPass, user.getEmail());
+                new EmailSender().sendNewCompanyMail(user.getUsername(), tempPass, user.getEmail());
             } catch (MessagingException e) {
 		throw new ServletException(e.getMessage(), e);
             }*/
