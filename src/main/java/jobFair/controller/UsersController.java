@@ -23,12 +23,15 @@ import jobFair.service.SpotService;
 import jobFair.service.UsersService;
 import jobFair.utils.CsvReader;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -110,6 +113,23 @@ public class UsersController {
         } else {
             return "redirect:/admin";
         }
+    }
+    @GetMapping("/deleteCompany")
+    public String getCompany(Model model) {
+        model.addAttribute("companies", usersService.getCompaniesOrdered());
+        return "deleteCompany";
+    }
+    
+    @PostMapping("/deleteCompany")
+    public String deleteCompany(Model model, @RequestParam("companyID") String companyID, 
+                                            @RequestParam("password") String password) {
+        
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        
+        String username = (String) auth.getPrincipal();
+        
+        model.addAttribute("companies", usersService.getCompaniesOrdered());
+        return "deleteCompany";
     }
 
 }
