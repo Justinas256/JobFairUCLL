@@ -1,0 +1,9 @@
+diff a/pom.xml b/pom.xml	(rejected hunks)
+@@ -93,7 +93,6 @@
+         <type>jar</type>
+      </dependency>
+     </dependencies>
+-		<dependency>
+ 
+     <build>
+         <plugins>
