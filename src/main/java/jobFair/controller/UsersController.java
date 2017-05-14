@@ -56,5 +56,27 @@ public class UsersController {
             return "admin";
         }
     }
+    
+    @PostMapping("/saveuserscvs")
+    public String saveUserCvs(@ModelAttribute("users") @Valid Users user, BindingResult bindingResult, HttpServletRequest request) {  
+        String tempPass;
+        if (bindingResult.hasErrors()) {
+            return "signupuser";
+        } else {
+            user.generateUserId(user.getCompanyName());
+            tempPass = user.generatePassword();
+            user.setRole(RoleEnum.COMPANY.toString());
+            usersService.save(user);
+            String succes = "Het bedrijf " + user.getCompanyName() + " is toegevoegd.";
+            request.setAttribute("success", succes);
+            /*try {
+                new EmailSender().sendNewCompanyMail(user.getUsername(), tempPass, user.getEmail());
+            } catch (MessagingException e) {
+		throw new ServletException(e.getMessage(), e);
+            }*/
+	
+            return "admin";
+        }
+    }
 
 }

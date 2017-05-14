@@ -45,7 +45,7 @@ public class CsvReader {
     }
     
     public void readUsers(List<String> errors, InputStream in) throws MessagingException{
-		List<Users> users = new ArrayList<>();
+                List<Users> users = new ArrayList<>();
 		Map<Users, String> mailList = new HashMap<>();
 
 		List<String[]> allRows = parser.parseAll(in, "ISO-8859-1");
