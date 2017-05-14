@@ -16,9 +16,9 @@ import java.util.List;
 import java.util.Map;
 import jobFair.model.Users;
 import jobFair.service.UsersService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.mail.MessagingException;
+import validation.UsersValidation;
 
 
 /**
@@ -29,9 +29,6 @@ import javax.mail.MessagingException;
 
 public class CsvReader {
     
-    @Autowired
-    private UsersService usersService;
-
     //private EmailSender emailSender = new EmailSender();
     private CsvParserSettings settings;
     private CsvParser parser;
@@ -44,41 +41,53 @@ public class CsvReader {
         parser = new CsvParser(settings);
     }
     
-    public void readUsers(List<String> errors, InputStream in) throws MessagingException{
-                List<Users> users = new ArrayList<>();
-		Map<Users, String> mailList = new HashMap<>();
+    public void readUsers(List<String> errors, InputStream in, UsersService service) throws MessagingException, Exception{
+            List<Users> users = new ArrayList<>();
+            Map<Users, String> mailList = new HashMap<>();
+            UsersValidation userValidation = new UsersValidation();
 
-		List<String[]> allRows = parser.parseAll(in, "ISO-8859-1");
-		System.out.println(allRows.size());
-		for (int i = 1; i < allRows.size(); i++) {
-			String[] data = allRows.get(i);
-			Users user = new Users();
-			String companyName = data[0];
-			String contactName = data[1];
-			String email = data[2];
-			try {
-                            user.setCompanyName(companyName);
-                            user.setContactName(contactName);
-                            user.setEmail(email);
-                            user.generateUserId(companyName);
-                            String tempPass = user.generatePassword();
+            List<String[]> allRows = parser.parseAll(in, "ISO-8859-1");
+            System.out.println(allRows.size());
+            for (int i = 1; i < allRows.size(); i++) {
+                String[] data = allRows.get(i);
+                if(!(data.length < 3)) { 
+                    Users user = new Users();
+                    String companyName = data[0];
+                    String contactName = data[1];
+                    String email = data[2];
 
-                            users.add(user);
-                            mailList.put(user, tempPass);
-			} catch (Exception e) {
-				errors.add(user.getCompanyName() + " kon niet worden toegevoegd door: " + e.getMessage());
-			}
-		}
-		usersService.addUsers(users);
+                    try {
+                    user.setCompanyName(companyName);
+                    user.setContactName(contactName);
+                    user.setEmail(email);
+                    user.generateUserId(companyName);
+                    user.setRole("COMPANY");
+                    String tempPass = user.generatePassword();
 
-                /*
-		try {
-                    emailSender.sendNewCompanyMail(mailList);
-		} catch (MessagingException e) {
-                    throw new MessagingException(e.getMessage(), e);
-		}
-                */
-	}
-    
-    
+                    String error = userValidation.validateUser(user);
+                    if( error != null) {
+                        errors.add(user.getCompanyName() + " kon niet worden toegevoegd door: " + error);
+                        break;
+                    } else {
+                        users.add(user);
+                        mailList.put(user, tempPass);
+                    }   
+                    } catch(Exception e) {
+                        throw new Exception(e.getMessage());
+                    }
+            }
+            if( errors == null || errors.isEmpty()) {
+                service.addUsers(users);
+            }
+
+            /*
+            try {
+                emailSender.sendNewCompanyMail(mailList);
+            } catch (MessagingException e) {
+                throw new MessagingException(e.getMessage(), e);
+            }
+            */
+        }
+    }   
+
 }

@@ -10,7 +10,7 @@
 	
 <div class="row">
 	<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6">
-		<form method="POST" action="Controller?action=upload" enctype="multipart/form-data">
+		<form method="POST" action="saveuserscvs" enctype="multipart/form-data">
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 			<legend><i class="fa fa-upload"></i> Bedrijven importeren</legend>
 			<div class="form-group form-inline">

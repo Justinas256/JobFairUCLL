@@ -86,13 +86,10 @@ public class UsersService {
 	List<String> emails = getAdmins().stream().map(Users::getEmail).collect(Collectors.toList());	
         return emails;
     }
-<<<<<<< HEAD
 
     public void addUsers(List<Users> users) {
         for(Users user: users) {
             this.save(user);
         }
     }
-=======
->>>>>>> 458481c54f8dfe9d7eead9e3ac284f1aeb664352
 }
