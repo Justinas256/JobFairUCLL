@@ -65,4 +65,8 @@ public class JobFairDataService {
         this.save(jobFair);
     }
     
+    public Date getJobFairDeadlineDate() {
+	return this.getJobFair().getDeadline();
+    }
+    
 }

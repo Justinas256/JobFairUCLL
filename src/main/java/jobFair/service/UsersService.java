@@ -115,4 +115,14 @@ public class UsersService {
         this.deleteUserById(adminId);
     }
     
+    public List<Users> getUsersWithoutSpot(){
+        List<Users> companiesWithoutSpot = this.getCompanies().stream().filter(u -> u.getSpots().isEmpty()).collect(Collectors.toList());
+        return companiesWithoutSpot;
+    }
+    
+    public List<String> getEmailFromUsersWithoutSpot(){
+        List<String> emails = this.getUsersWithoutSpot().stream().map(Users::getEmail).collect(Collectors.toList());	
+        return emails;
+    }
+    
 }

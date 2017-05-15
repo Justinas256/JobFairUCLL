@@ -70,7 +70,7 @@
 
 <div class="row">
 	<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6">
-		<form method="POST" action="Controller?action=endMail">
+		<form method="POST" action="endmail">
 			<legend><i class="fa fa-bell"></i> Herinnering</legend>
 			<p>Als je merkt dat een aantal bedrijven nog geen plaats gekozen hebben en de deadline nadert, kan je deze tool gebruiken om naar die bedrijven een herinneringsmail te sturen</p>
 			<div class="form-group form-inline">
