@@ -35,4 +35,16 @@ public class UsersValidation {
         }     
         return null;
     }
+    
+     public String validateAdmin(Users user) {
+
+        Set<ConstraintViolation<Users>> violations = validator.validate(user);
+
+        for (ConstraintViolation<Users> violation : violations) {
+            String field = violation.getPropertyPath().toString();
+            //violation.getPropertyPath();
+            return violation.getMessage();
+        }     
+        return null;
+    }
 }

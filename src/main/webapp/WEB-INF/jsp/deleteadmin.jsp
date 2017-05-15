@@ -10,7 +10,8 @@
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6">
         <p>Selecteer hieronder de beheerder die je wenst te verwijderen.</p>
-        <form:form method="POST" action="deleteadmin" commandName="admin" modelAttibute="admin">
+        <form method="POST" action="deleteadmin">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <div class="form-group">
                 <label for="adminID">Beheerder: </label>
                 <select class="form-control" name="adminID" id="adminID">
@@ -21,12 +22,12 @@
             </div>
             <div class="form-group">
                 <label for="password">Je Wachtwoord: </label>
-                <input type="password" class="form-control" id="password" placeholder="password" name="password">
+                <input type="password" class="form-control" id="password" placeholder="password" name="password"/>
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-primary" value="Verwijder admin">Verwijder beheerder</button>
             </div>
-        </form:form>
+        </form>
     </div>
 </div>
 

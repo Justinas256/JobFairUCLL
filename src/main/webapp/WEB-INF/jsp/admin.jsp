@@ -46,8 +46,8 @@
 		<p>Deze tool geeft je de mogelijkheid om bedrijven toe te voegen en te verwijderen.
 				Na afloop van de jobbeurs kunnen ook alle bedrijven verwijderd worden.</p>
 		<a class="btn btn-primary" href = "signup">Voeg Bedrijf toe</a>
-		<a class="btn btn-danger" href = "getusers">Verwijder Bedrijf</a>
-		<a class="btn btn-danger" href="confirmdeleteall">Verwijder alle Bedrijven</a>
+		<a class="btn btn-danger" href = "deleteCompany">Verwijder Bedrijf</a>
+		<a class="btn btn-danger" href="deleteallcompanies">Verwijder alle Bedrijven</a>
 	</div>
 </div>
 <div class="row">
@@ -63,7 +63,7 @@
 		<h4 class="bordboth4"><i class="fa fa-lock"></i> Beheerders</h4>
 		<p>Gebruik deze tool om nieuwe beheerders toe te voegen of om een beheerder te verwijderen</p>
 		<a class="btn btn-primary" href = "adminform">Voeg een beheerder toe</a>
-		<a class="btn btn-danger" href = "deleteadminform">Verwijder een beheerder</a>
+		<a class="btn btn-danger" href = "deleteadmin">Verwijder een beheerder</a>
 	</div>
 </div>
 

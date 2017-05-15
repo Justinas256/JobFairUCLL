@@ -111,4 +111,8 @@ public class UsersService {
         return users;
     }
     
+    public void deleteAdmin(Long adminId){
+        this.deleteUserById(adminId);
+    }
+    
 }

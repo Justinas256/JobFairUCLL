@@ -97,23 +97,21 @@ public class UsersController {
         return "admin";
     }
     
-    @GetMapping("/confirmdeleteallusers")
-    public ModelAndView signUpAdmin() {
+    @GetMapping("/deleteallcompanies")
+    public ModelAndView deleteAllCompanies() {
         return new ModelAndView("deleteallusers");
     }
     
     @PostMapping("/dropusers")
     public String dropUsers(HttpServletRequest request) {
         String action = request.getParameter("submit");
-
         if(action.equals("ja")){
             spotService.removeAllUsersFromSpots();
             usersService.deleteAll();
-            return "redirect:/";
-        } else {
-            return "redirect:/admin";
         }
+        return "redirect:/admin";
     }
+    
     @GetMapping("/deleteCompany")
     public String getCompany(Model model) {
         model.addAttribute("companies", usersService.getCompaniesOrdered());

@@ -22,6 +22,10 @@ import javax.mail.MessagingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
@@ -61,11 +65,23 @@ public class AdminController {
         }
     }
           
-    @GetMapping("/deleteadminform")
+    @GetMapping("/deleteadmin")
     public ModelAndView deleteAdmin() {
         ModelAndView modelAndView = new ModelAndView("deleteAdmin");
         modelAndView.addObject("admins", usersService.getAdmins());
         return modelAndView;
     }	
-
+ 
+    @PostMapping("/deleteAdmin")
+    public String deleteAdmin(Model model, @RequestParam("adminID") String adminID, 
+                                            @RequestParam("password") String password) {
+        
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        
+        String username = (String) auth.getPrincipal();
+        
+        usersService.deleteAdmin(Long.parseLong(adminID));
+        model.addAttribute("admins", usersService.getAdmins());
+        return "deleteadmin";
+    }
 }

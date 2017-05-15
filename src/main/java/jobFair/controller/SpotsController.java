@@ -89,7 +89,16 @@ public class SpotsController {
         
         jobFairDataService.save(new JobFairData("Job fair", "2017","", null));
         
-
+        user = new Users();
+        user.setPassword("company");
+        user.setRole("COMPANY");
+        user.setUsername("company");
+        user.setSalt("");
+        user.setCompanyName("company");
+        user.setContactName("company");
+        user.setEmail("Email@gmail.com");
+        usersService.save(user);
+        
     }
     
 }
