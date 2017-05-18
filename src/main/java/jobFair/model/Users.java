@@ -20,9 +20,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import jobFair.validation.NotNullIfAnotherFieldHasValue;
+import javax.persistence.Transient;
+import jobFair.utils.PasswordEncode;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
 /**
  *
@@ -37,7 +41,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 })*/
 @Entity
 public class Users implements Serializable {
-
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
