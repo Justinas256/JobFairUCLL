@@ -94,9 +94,9 @@ public class SpotsController {
         user.setRole("COMPANY");
         user.setUsername("company");
         user.setSalt("");
-        user.setCompanyName("company");
-        user.setContactName("company");
-        user.setEmail("Email@gmail.com");
+        user.setCompanyName("company name");
+        user.setContactName("contact name");
+        user.setEmail("contact@gmail.com");
         usersService.save(user);
         
     }

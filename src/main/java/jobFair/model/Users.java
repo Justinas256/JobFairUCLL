@@ -249,4 +249,14 @@ public class Users implements Serializable {
        this.setUsername(userID.replace(" ", ""));
    }
     
+    public boolean isCorrectPassword(String password) {
+        if(password.isEmpty()){
+            throw new IllegalArgumentException("Geen wachtwoord gegeven");
+        }
+        try {
+            return getPassword().equals(hashPassword(password));
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Systeem kon geen hashed wachtwoord creeren");
+        }
+    }
 }

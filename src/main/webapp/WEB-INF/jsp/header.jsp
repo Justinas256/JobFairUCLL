@@ -63,7 +63,7 @@
                     <ul class="nav navbar-nav navbar-right">	
 
                         <sec:authorize access="isAuthenticated()">
-                                <li><a href="Controller?action=myaccount&id=${sessionScope.user.userID}"><i class="fa fa-user-circle"></i> <c:out value="${user.username}"/></a></li>
+                                <li><a href="account"><i class="fa fa-user-circle"></i> <c:out value="${user.username}"/></a></li>
                                 <li><a href="logout"><i class="fa fa-sign-out"></i> Uitloggen</a></li>
                         </sec:authorize>
                         <sec:authorize access="!isAuthenticated()">

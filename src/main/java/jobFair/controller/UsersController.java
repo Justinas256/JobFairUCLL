@@ -129,5 +129,5 @@ public class UsersController {
         model.addAttribute("companies", usersService.getCompaniesOrdered());
         return "deleteCompany";
     }
-
+    
 }

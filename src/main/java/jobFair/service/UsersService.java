@@ -8,6 +8,7 @@ package jobFair.service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import jobFair.dao.UsersRepository;
@@ -125,4 +126,10 @@ public class UsersService {
         return emails;
     }
     
+    public Users getUserByUserName(String username){
+        return this.findAll().stream()
+            .filter(e -> e.getUsername().equals(username))
+            .findFirst()
+            .get();
+    }  
 }
