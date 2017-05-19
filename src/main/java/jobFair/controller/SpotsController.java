@@ -7,6 +7,7 @@ package jobFair.controller;
 
 import java.util.List;
 import jobFair.model.JobFairData;
+import jobFair.model.RoleEnum;
 import jobFair.model.Spot;
 import jobFair.model.Users;
 import jobFair.service.JobFairDataService;
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  *
@@ -101,4 +104,23 @@ public class SpotsController {
         
     }
     
+    @GetMapping("/myspot")
+    public ModelAndView mySpot(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Users user = usersService.getUserByUserName(auth.getName());
+        ModelAndView model = new ModelAndView("spot");
+       
+        Spot spot = spotService.getSpotFromUser(user.getId());
+        if (spot != null) {
+            //model.addObject("spotnr", spot.getSpotNo());
+            //model.addObject("company", user.getCompanyName());
+            /*model.addObject("chairs", spot.getChairs());
+            model.addObject("tables", spot.getTables());
+            model.addObject("extra", spot.getRemarks());
+            if(spot.isElectricity() == true) {
+                model.addObject("electricity", "ja");
+            } else model.addObject("electricity", "nee");*/
+        }
+        return model;
+    }
 }

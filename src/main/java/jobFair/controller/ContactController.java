@@ -43,7 +43,7 @@ public class ContactController {
         return "contactmail";
     }
     
-    @PostMapping("/sendcontact")
+    @PostMapping("/contact")
     public String sendEmail(@RequestParam("name") String from, @RequestParam("subject") String subj, @RequestParam("message") String msg, RedirectAttributes redirectAttributes) throws ServletException, IOException {
         List<String> to = usersService.getAllAdminEmails();
         String scrum = "scrumbags.06@gmail.com";

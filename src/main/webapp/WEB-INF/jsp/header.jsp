@@ -45,12 +45,12 @@
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
-                    <ul class="nav navbar-nav"><li id="${param.home}"><a href="Controller?action=home"><i class="fa fa-home"></i> Home</a></li>
+                    <ul class="nav navbar-nav"><li id="${param.home}"><a href="home"><i class="fa fa-home"></i> Home</a></li>
                         <li id="${param.spotoverview}"><a href="spots"><i class="fa fa-globe"></i> Alle plaatsen</a></li>
 
                         
                         <sec:authorize ifAllGranted="COMPANY">
-                            <li id="${param.myspot}"><a href="Controller?action=myspot"><i class="fa fa-map-marker"></i> Mijn plaats</a></li>
+                            <li id="${param.myspot}"><a href="myspot"><i class="fa fa-map-marker"></i> Mijn plaats</a></li>
                         </sec:authorize>   
                                    
                         <sec:authorize ifAllGranted="ADMIN">

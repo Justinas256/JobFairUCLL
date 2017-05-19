@@ -6,7 +6,7 @@
 <div class="row">
 	<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6">
             <h3>Contact</h3>
-            <form method="POST" action="sendcontact" novalidate="novalidate">
+            <form method="POST" action="contact" novalidate="novalidate">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <fieldset>
                         <legend>Vragen / Opmerkingen</legend>

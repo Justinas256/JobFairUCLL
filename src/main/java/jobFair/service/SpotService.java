@@ -98,4 +98,12 @@ public class SpotService {
            repository.save(spot);
         }
     }
+    
+    public Spot getSpotFromUser(Long userID){
+        return this.findAll()
+                .stream()
+                .filter(spot -> spot.getUser().getId().equals(userID))
+                .findFirst()
+                .get();
+    }
 }
