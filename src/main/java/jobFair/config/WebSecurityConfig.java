@@ -30,9 +30,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
     @Autowired
     DataSource dataSource;
     
+    
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+    
     @Autowired
     public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
       auth.jdbcAuthentication().dataSource(dataSource)
+        .passwordEncoder(passwordEncoder())
         .usersByUsernameQuery(
          "select username,password, 'true' from users where username=?")
         .authoritiesByUsernameQuery(

@@ -15,6 +15,7 @@ import jobFair.dao.UsersRepository;
 import jobFair.model.RoleEnum;
 import jobFair.model.Spot;
 import jobFair.model.Users;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -25,6 +26,9 @@ import org.springframework.stereotype.Service;
 @Service
 @Transactional
 public class UsersService {
+    
+    @Autowired
+    private SpotService spotService;
     
     private final UsersRepository repository;
 
@@ -40,6 +44,16 @@ public class UsersService {
         List<Users> users = new ArrayList<>();
         for(Users user: repository.findAll()) {
             users.add(user);
+	}
+        return users; 
+    }
+    
+    public List<Users> findAllCompanies() {
+        List<Users> users = new ArrayList<>();
+        for(Users user: repository.findAll()) {
+            if(user.getRole().toLowerCase().equals("company")) {
+                users.add(user);
+            }  
 	}
         return users; 
     }
@@ -69,7 +83,7 @@ public class UsersService {
     }
     
     public List<Users> usersWithoutSpot() {
-        List<Users> users = this.findAll();
+        List<Users> users = this.findAllCompanies();
         List<Users> noSpotUsers = new ArrayList<>();
         
         for(Users user: users) {
@@ -107,7 +121,7 @@ public class UsersService {
     }
 
     public List<Users> getCompaniesOrdered() {
-        List<Users> users = this.findAll();
+        List<Users> users = this.findAllCompanies();
         Collections.sort(users, (Users p1, Users p2) -> p1.getCompanyName().compareTo(p2.getCompanyName()));
         return users;
     }
@@ -132,4 +146,31 @@ public class UsersService {
             .findFirst()
             .get();
     }  
+    
+    public void deleteCompany(Long companyID) {
+        Users user = this.geUserById(companyID); 
+        this.deleteCompany(user);
+    }
+    
+    public void deleteCompany(Users user) {   
+        List<Spot> userSpots = user.getSpots();
+        if(userSpots != null && userSpots.size() > 0) {
+            user.setSpots(new ArrayList<Spot>());
+            this.save(user);
+        }
+        
+        for(Spot spot: userSpots) {
+            spot.setUser(null);
+            spotService.save(spot);
+        }
+        this.delete(user);
+    }
+    
+    public void deleteAllCompanies() {
+        List<Users> companies = this.findAllCompanies();
+        for(Users company : companies) {
+            this.deleteCompany(company);
+        }
+    }
+    
 }

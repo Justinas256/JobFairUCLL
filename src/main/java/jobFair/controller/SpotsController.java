@@ -13,7 +13,9 @@ import jobFair.model.Users;
 import jobFair.service.JobFairDataService;
 import jobFair.service.SpotService;
 import jobFair.service.UsersService;
+import jobFair.utils.PasswordEncode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +29,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
  */
 @Controller
 public class SpotsController {
+    
+    @Autowired
+    private PasswordEncode passwordEncode;
     
     @Autowired
     private SpotService spotService;
@@ -81,7 +86,7 @@ public class SpotsController {
         usersService.save(new Users("Name", "Company", "email@gmail.com", "user", "pass", "", "COMPANY", null));
    
         Users user = new Users();
-        user.setPassword("admin");
+        user.setPassword(passwordEncode.encodePassword("admin"));
         user.setRole("ADMIN");
         user.setUsername("admin");
         user.setSalt("");
