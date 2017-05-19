@@ -78,7 +78,9 @@
 <main>
     <div class="container">
         <div class="row">
+            
                 <h2>${param.h2}</h2>
+            
                 <c:if test="${errors!=null}">
                     <div class="alert alert-danger">
                         <ul>
