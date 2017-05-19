@@ -33,6 +33,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -107,13 +109,26 @@ public class UsersController {
         return new ModelAndView("deleteallusers");
     }
     
-    @PostMapping("/dropusers")
-    public String dropUsers(HttpServletRequest request) {
-        String action = request.getParameter("submit");
-        if(action.equals("ja")){
-            usersService.deleteAllCompanies();
-        }
+    @RequestMapping(value="/dropusers", params = "cancel", method=RequestMethod.POST)
+    public String dropUsersCancel() {
         return "redirect:/admin";
+    }
+    
+    @RequestMapping(value="/dropusers", params = "delete", method=RequestMethod.POST)
+    public String dropUsers(Model model, RedirectAttributes redirectAttributes, @RequestParam("password") String password) {
+        if(passwordEncode.passwordMatchLoggedUser(password)) {
+            try {
+                usersService.deleteAllCompanies();
+
+                redirectAttributes.addFlashAttribute("success", "All companies are deleted!");
+                return "redirect:/admin";
+            } catch (Exception ex) {
+                redirectAttributes.addFlashAttribute("errors", ex.getMessage());
+            }  
+        } else {
+            redirectAttributes.addFlashAttribute("errors", "Incorrect password");
+        }   
+        return "redirect:/deleteallcompanies";  
     }
     
     @GetMapping("/deleteCompany")
