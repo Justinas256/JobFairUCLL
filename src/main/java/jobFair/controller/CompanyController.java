@@ -61,6 +61,8 @@ public class CompanyController {
             return "redirect:/account";
         }
         
+        user.setContactName(contactname);
+        user.setEmail(email);
         usersService.save(user);
         redirectAttributes.addFlashAttribute("success", "Uw gegevens werden aangepast.");
         
