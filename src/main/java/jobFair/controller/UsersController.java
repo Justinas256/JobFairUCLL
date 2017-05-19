@@ -19,9 +19,11 @@ import javax.validation.Valid;
 import jobFair.model.RoleEnum;
 import jobFair.model.Users;
 import jobFair.model.EmailSender;
+import jobFair.model.Spot;
 import jobFair.service.SpotService;
 import jobFair.service.UsersService;
 import jobFair.utils.CsvReader;
+import jobFair.utils.PasswordEncode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -47,6 +49,9 @@ public class UsersController {
     
     @Autowired
     private SpotService spotService;
+    
+    @Autowired
+    private PasswordEncode passwordEncode;
     
     @GetMapping("/signup")
     public ModelAndView signUpUser() {
@@ -106,8 +111,7 @@ public class UsersController {
     public String dropUsers(HttpServletRequest request) {
         String action = request.getParameter("submit");
         if(action.equals("ja")){
-            spotService.removeAllUsersFromSpots();
-            usersService.deleteAll();
+            usersService.deleteAllCompanies();
         }
         return "redirect:/admin";
     }
@@ -119,15 +123,26 @@ public class UsersController {
     }
     
     @PostMapping("/deleteCompany")
-    public String deleteCompany(Model model, @RequestParam("companyID") String companyID, 
+    public String deleteCompany(Model model, RedirectAttributes redirectAttributes, @RequestParam("companyID") Long companyID, 
                                             @RequestParam("password") String password) {
         
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        
-        String username = (String) auth.getPrincipal();
-        
-        model.addAttribute("companies", usersService.getCompaniesOrdered());
-        return "deleteCompany";
+        if(passwordEncode.passwordMatchLoggedUser(password)) {
+            try {
+                
+                Users user = usersService.geUserById(companyID); 
+                String companyName = user.getCompanyName();
+                
+                usersService.deleteCompany(companyID);
+                
+                redirectAttributes.addFlashAttribute("success", "Het bedrijf " + companyName + " is verwijderd");
+                return "redirect:/admin";
+            } catch (Exception ex) {
+                redirectAttributes.addFlashAttribute("errors", ex.getMessage());
+            }  
+        } else {
+            redirectAttributes.addFlashAttribute("errors", "Incorrect password");
+        }   
+        return "redirect:/deleteCompany";
     }
     
 }
