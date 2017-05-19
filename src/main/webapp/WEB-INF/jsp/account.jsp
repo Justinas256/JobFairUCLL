@@ -25,7 +25,7 @@
                           <p>${sessionScope.user.companyName}</p>
                         </div>
                 </fieldset>
-            <form method="POST" action="updateaccount" novalidate="novalidate" role="form">
+            <form method="POST" action="account" novalidate="novalidate" role="form">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <fieldset>
                 <legend>Contactpersoon</legend>

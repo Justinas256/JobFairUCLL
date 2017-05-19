@@ -7,6 +7,7 @@ package jobFair.controller;
 
 import jobFair.model.Users;
 import jobFair.service.UsersService;
+import jobFair.utils.PasswordEncode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,6 +28,9 @@ public class CompanyController {
     @Autowired
     UsersService usersService;
     
+    @Autowired
+    PasswordEncode passwordEncode;
+    
     @GetMapping("/account")
     public ModelAndView getAccount(){  
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -37,7 +41,7 @@ public class CompanyController {
 	return model;		
     }
     
-    @PostMapping("/updateaccount")
+    @PostMapping("/account")
     public String updateAccount(@RequestParam("contactname") String contactname, @RequestParam("email") String email, @RequestParam("password") String password, RedirectAttributes redirectAttributes){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Users user = usersService.getUserByUserName(auth.getName());
@@ -47,7 +51,7 @@ public class CompanyController {
             return "redirect:/account";
         }
 
-        if (!user.isCorrectPassword(password)) {
+        if (!passwordEncode.passwordMatchLoggedUser(password)) {
             redirectAttributes.addFlashAttribute("errors", "Verkeerd wachtwoord.");
             return "redirect:/account";
         }
@@ -72,8 +76,8 @@ public class CompanyController {
             redirectAttributes.addFlashAttribute("errors", "Je bent verplicht om je wachtwoord in te geven.");
             return "redirect:/account";
         }
-        
-        if(!user.isCorrectPassword(currpass)){
+
+        if(!passwordEncode.passwordMatchLoggedUser(currpass)){
             redirectAttributes.addFlashAttribute("errors", "Huidige wachtwoord is niet correct.");
             return "redirect:/account";
         }
@@ -82,8 +86,7 @@ public class CompanyController {
             redirectAttributes.addFlashAttribute("errors", "Nieuw wachtwoord en herhaalde wachtwoord komen niet overeen.");
             return "redirect:/account";
         }
-	
-        user.setPasswordHashed(newpas);
+	user.setPassword(passwordEncode.encodePassword(newpas));
         usersService.save(user);
 	redirectAttributes.addFlashAttribute("success", "Uw wachtwoord werd aangepast.");
         

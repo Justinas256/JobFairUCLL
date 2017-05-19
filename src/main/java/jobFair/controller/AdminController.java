@@ -37,7 +37,7 @@ public class AdminController {
     @Autowired
     private UsersService usersService;
     
-    @GetMapping("/adminform")
+    @GetMapping("/signupadmin")
     public ModelAndView signUpAdmin() {
         ModelAndView modelAndView = new ModelAndView("addadmin");
         modelAndView.addObject("admin", new Users());

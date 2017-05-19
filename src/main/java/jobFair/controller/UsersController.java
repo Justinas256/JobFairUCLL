@@ -53,14 +53,14 @@ public class UsersController {
     @Autowired
     private PasswordEncode passwordEncode;
     
-    @GetMapping("/signup")
+    @GetMapping("/signupcompany")
     public ModelAndView signUpUser() {
         ModelAndView modelAndView = new ModelAndView("signupuser");
         modelAndView.addObject("users", new Users());
         return modelAndView;
     }
     
-    @PostMapping("/saveuser")
+    @PostMapping("/signupcompany")
     public String saveUser(@ModelAttribute("users") @Valid Users user, BindingResult bindingResult, RedirectAttributes redirectAttributes) throws ServletException{  
         String tempPass;
         if (bindingResult.hasErrors()) {

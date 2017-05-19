@@ -98,7 +98,7 @@ public class SpotsController {
         jobFairDataService.save(new JobFairData("Job fair", "2017","", null));
         
         user = new Users();
-        user.setPassword("company");
+        user.setPassword(passwordEncode.encodePassword("company"));
         user.setRole("COMPANY");
         user.setUsername("company");
         user.setSalt("");
