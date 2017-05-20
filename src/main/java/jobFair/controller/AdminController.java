@@ -67,7 +67,7 @@ public class AdminController {
           
     @GetMapping("/deleteadmin")
     public ModelAndView deleteAdmin() {
-        ModelAndView modelAndView = new ModelAndView("deleteAdmin");
+        ModelAndView modelAndView = new ModelAndView("deleteadmin");
         modelAndView.addObject("admins", usersService.getAdmins());
         return modelAndView;
     }	
