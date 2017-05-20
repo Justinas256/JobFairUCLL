@@ -104,17 +104,17 @@ public class UsersController {
         return "admin";
     }
     
-    @GetMapping("/deleteallcompanies")
+    @GetMapping("/deletecompanies")
     public ModelAndView deleteAllCompanies() {
         return new ModelAndView("deleteallusers");
     }
     
-    @RequestMapping(value="/dropusers", params = "cancel", method=RequestMethod.POST)
+    @RequestMapping(value="/deletecompanies", params = "cancel", method=RequestMethod.POST)
     public String dropUsersCancel() {
         return "redirect:/admin";
     }
     
-    @RequestMapping(value="/dropusers", params = "delete", method=RequestMethod.POST)
+    @RequestMapping(value="/deletecompanies", params = "delete", method=RequestMethod.POST)
     public String dropUsers(Model model, RedirectAttributes redirectAttributes, @RequestParam("password") String password) {
         if(passwordEncode.passwordMatchLoggedUser(password)) {
             try {
@@ -128,7 +128,7 @@ public class UsersController {
         } else {
             redirectAttributes.addFlashAttribute("errors", "Incorrect password");
         }   
-        return "redirect:/deleteallcompanies";  
+        return "redirect:/deletecompanies";  
     }
     
     @GetMapping("/deleteCompany")

@@ -47,7 +47,7 @@
 				Na afloop van de jobbeurs kunnen ook alle bedrijven verwijderd worden.</p>
 		<a class="btn btn-primary" href = "signupcompany">Voeg Bedrijf toe</a>
 		<a class="btn btn-danger" href = "deleteCompany">Verwijder Bedrijf</a>
-		<a class="btn btn-danger" href="deleteallcompanies">Verwijder alle Bedrijven</a>
+		<a class="btn btn-danger" href="deletecompanies">Verwijder alle Bedrijven</a>
 	</div>
 </div>
 <div class="row">

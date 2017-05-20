@@ -9,7 +9,7 @@
         <h3>Wil je alle bedrijven uit het systeem verwijderen?</h3>
         <p>Het verwijderen van alle bedrijven zorgt tevens ook dat alle plaatsen weer vrij komen.</p>
         <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6">
-        <form method="POST" action="dropusers" commandName="dropusers">
+        <form method="POST" action="deletecompanies" commandName="deletecompanies">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <div class="form-group">
             <p>
