@@ -6,19 +6,20 @@
 		<jsp:param value="current" name="home"/>
 		<jsp:param value="UCLL Jobbeurs 2017" name="h2"/>
 	</jsp:include>
-		<c:if test="${sessionScope.user!=null}">
-			<h3>Welkom <c:out value="${sessionScope.user.companyName}"/>!</h3>
-		</c:if>
-		<c:choose>
-			<c:when test="${reserveer!=null}">
-				<h3>Plaats ${spotnr} werd gereserveerd.</h3>
-			</c:when>
-			<c:when test="${update!=null}">
-				<h3>Plaats ${spotnr} werd geüpdatet.</h3>
-			</c:when>
-			<c:when test="${annuleer!=null}">
-				<h3>Plaats ${spotnr} werd geannuleerd.</h3>
-			</c:when>
-		</c:choose>
-		
+            <c:if test="${not empty companyName}">
+                  <h3>Welkom <c:out value="${companyName}"/>!</h3>
+            </c:if>   
+            <c:choose>
+                    <c:when test="${reserveer!=null}">
+                            <h3>Plaats ${spotnr} werd gereserveerd.</h3>
+                    </c:when>
+                    <c:when test="${update!=null}">
+                            <h3>Plaats ${spotnr} werd geüpdatet.</h3>
+                    </c:when>
+                    <c:when test="${annuleer!=null}">
+                            <h3>Plaats ${spotnr} werd geannuleerd.</h3>
+                    </c:when>
+
+            </c:choose>
+<jsp:include page="imgmap.jsp"></jsp:include>
 <jsp:include page="footer.jsp"/>
