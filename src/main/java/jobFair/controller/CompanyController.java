@@ -5,6 +5,7 @@
  */
 package jobFair.controller;
 
+import java.util.List;
 import jobFair.model.Users;
 import jobFair.service.UsersService;
 import jobFair.utils.PasswordEncode;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -94,4 +96,34 @@ public class CompanyController {
         
         return "redirect:/account";
     }
+    
+    @GetMapping("/companies")
+    public String getCompanies(Model model){  
+        List<Users> companies = usersService.getCompaniesOrdered();
+        model.addAttribute("companies", companies);
+        return "companiesoverview";
+    }
+    
+    @GetMapping("/companiesByContact")
+    public String getCompaniesOrderContact(Model model){  
+        List<Users> companies = usersService.getCompaniesOrderedByContact();
+        model.addAttribute("companies", companies);
+        return "companiesoverview";
+    }
+    
+    @GetMapping("/companiesByEmail")
+    public String getCompaniesOrderEmail(Model model){  
+        List<Users> companies = usersService.getCompaniesOrderedByEmail();
+        model.addAttribute("companies", companies);
+        return "companiesoverview";
+    }
+    
+    @GetMapping("/companiesBySpot")
+    public String getCompaniesOrderSpot(Model model){  
+        List<Users> companies = usersService.getCompaniesOrderedBySpot();
+        model.addAttribute("companies", companies);
+        return "companiesoverview";
+    }
+    
+    
 }

@@ -7,6 +7,7 @@ package jobFair.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -122,7 +123,39 @@ public class UsersService {
 
     public List<Users> getCompaniesOrdered() {
         List<Users> users = this.findAllCompanies();
-        Collections.sort(users, (Users p1, Users p2) -> p1.getCompanyName().compareTo(p2.getCompanyName()));
+        Collections.sort(users, (Users p1, Users p2) -> p1.getCompanyName().toLowerCase().compareTo(p2.getCompanyName().toLowerCase()));
+        return users;
+    }
+    
+    public List<Users> getCompaniesOrderedByContact() {
+        List<Users> users = this.findAllCompanies();
+        Collections.sort(users, (Users p1, Users p2) -> p1.getContactName().toLowerCase().compareTo(p2.getContactName().toLowerCase()));
+        return users;
+    }
+    
+     public List<Users> getCompaniesOrderedByEmail() {
+        List<Users> users = this.findAllCompanies();
+        Collections.sort(users, (Users p1, Users p2) -> p1.getEmail().toLowerCase().compareTo(p2.getEmail().toLowerCase()));
+        return users;
+    }
+     
+     public List<Users> getCompaniesOrderedBySpot() {
+        List<Users> users = this.findAllCompanies();
+        Collections.sort(users, new Comparator<Users>() {
+            @Override
+            public int compare(Users p1, Users p2) {
+                if(p1.getSpots().isEmpty() && p2.getSpots().isEmpty()) {
+                    return 0;
+                } 
+                if(p1.getSpots().isEmpty()) {
+                    return 1;
+                }
+                if(p2.getSpots().isEmpty()) {
+                    return -1;
+                }
+                return p1.getSpots().get(0).getSpotNo().compareTo(p2.getSpots().get(0).getSpotNo());
+            }
+        });
         return users;
     }
     
