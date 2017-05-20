@@ -85,7 +85,7 @@
 		<h4 class="bordboth4"><i class="fa fa-list-ul"></i> Alle bedrijven</h4>
 		<p>Deze tool toont je een overzicht van alle bedrijven en biedt ook de mogelijkheid om een '.csv' bestand te downloaden in hetzelfde formaat dat je nodig heeft voor de upload-tool.</p>
 		<a class="btn btn-primary" href = "companies">Lijst met alle bedrijven</a>
-		<a class="btn btn-primary" href = "Controller?action=download"><i class="fa fa-download"></i> Download lijst</a>
+		<a class="btn btn-primary" href = "downloadCompanies"><i class="fa fa-download"></i> Download lijst</a>
 	</div>
 </div>
 <div class="row">

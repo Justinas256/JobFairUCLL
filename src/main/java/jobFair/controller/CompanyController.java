@@ -6,8 +6,10 @@
 package jobFair.controller;
 
 import java.util.List;
+import javax.servlet.http.HttpServletResponse;
 import jobFair.model.Users;
 import jobFair.service.UsersService;
+import jobFair.utils.CsvWriter;
 import jobFair.utils.PasswordEncode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -28,10 +30,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class CompanyController {
     
     @Autowired
-    UsersService usersService;
+    private UsersService usersService;
     
     @Autowired
-    PasswordEncode passwordEncode;
+    private PasswordEncode passwordEncode;
+    
+    @Autowired
+    private CsvWriter csvWriter;
     
     @GetMapping("/account")
     public ModelAndView getAccount(){  
@@ -125,5 +130,15 @@ public class CompanyController {
         return "companiesoverview";
     }
     
+    @GetMapping("/downloadCompanies")
+    public String downloadCompanies(Model model, HttpServletResponse response){  
+        List<Users> companies = usersService.getCompaniesOrdered();
+        try {
+            csvWriter.getCompanies(companies, response);
+        } catch (Exception e) {
+            model.addAttribute("errors", e.getLocalizedMessage());
+        }
+        return "admin";
+    }
     
 }
