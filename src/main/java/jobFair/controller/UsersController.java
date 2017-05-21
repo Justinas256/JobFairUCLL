@@ -8,25 +8,19 @@ package jobFair.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import javax.mail.MessagingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
 import jobFair.model.RoleEnum;
 import jobFair.model.Users;
 import jobFair.model.EmailSender;
-import jobFair.model.Spot;
 import jobFair.service.SpotService;
 import jobFair.service.UsersService;
 import jobFair.utils.CsvReader;
 import jobFair.utils.PasswordEncode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -115,7 +109,7 @@ public class UsersController {
     }
     
     @RequestMapping(value="/deletecompanies", params = "delete", method=RequestMethod.POST)
-    public String dropUsers(Model model, RedirectAttributes redirectAttributes, @RequestParam("password") String password) {
+    public String deleteCompanies(Model model, RedirectAttributes redirectAttributes, @RequestParam("password") String password) {
         if(passwordEncode.passwordMatchLoggedUser(password)) {
             try {
                 usersService.deleteAllCompanies();

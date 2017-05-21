@@ -40,12 +40,12 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <h1 class="h1-normal"><a class="navbar-brand" href="Controller?action=home">Jobfair 2017</a></h1>
+                    <h1 class="h1-normal"><a class="navbar-brand" href="index">Jobfair 2017</a></h1>
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
-                    <ul class="nav navbar-nav"><li id="${param.home}"><a href="home"><i class="fa fa-home"></i> Home</a></li>
+                    <ul class="nav navbar-nav"><li id="${param.home}"><a href="index"><i class="fa fa-home"></i> Home</a></li>
                         <li id="${param.spotoverview}"><a href="spots"><i class="fa fa-globe"></i> Alle plaatsen</a></li>
 
                         

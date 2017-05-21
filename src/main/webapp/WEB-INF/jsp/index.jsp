@@ -6,8 +6,8 @@
 		<jsp:param value="current" name="home"/>
 		<jsp:param value="UCLL Jobbeurs 2017" name="h2"/>
 	</jsp:include>
-		<c:if test="${sessionScope.user!=null}">
-			<h3>Welkom <c:out value="${sessionScope.user.companyName}"/>!</h3>
+		<c:if test="${user!=null}">
+			<h3>Welkom <c:out value="${user.companyName}"/>!</h3>
 		</c:if>
 		<c:choose>
 			<c:when test="${reserveer!=null}">

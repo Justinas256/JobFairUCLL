@@ -6,8 +6,9 @@
 package jobFair.controller;
 
 import java.util.List;
+import javax.mail.MessagingException;
+import javax.servlet.ServletException;
 import jobFair.model.JobFairData;
-import jobFair.model.RoleEnum;
 import jobFair.model.Spot;
 import jobFair.model.Users;
 import jobFair.service.JobFairDataService;
@@ -15,13 +16,16 @@ import jobFair.service.SpotService;
 import jobFair.service.UsersService;
 import jobFair.utils.PasswordEncode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import jobFair.model.EmailSender;
 
 /**
  *
@@ -107,6 +111,14 @@ public class SpotsController {
         user.setEmail("contact@gmail.com");
         usersService.save(user);
         
+        Spot spot = new Spot();
+        spot.setChairs(2);
+        spot.setElectricity(true);
+        spot.setRemarks("ramarks");
+        spot.setSpotNo("42");
+        spot.setTables(3);
+        spotService.save(spot);
+        
     }
     
     @GetMapping("/myspot")
@@ -114,18 +126,119 @@ public class SpotsController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Users user = usersService.getUserByUserName(auth.getName());
         ModelAndView model = new ModelAndView("spot");
-       
-        Spot spot = spotService.getSpotFromUser(user.getId());
+        model.addObject("user", user);
+        
+        Spot spot = spotService.getSpotFromUser(user);             
+        model.addObject("spot", spot);
         if (spot != null) {
-            //model.addObject("spotnr", spot.getSpotNo());
-            //model.addObject("company", user.getCompanyName());
-            /*model.addObject("chairs", spot.getChairs());
-            model.addObject("tables", spot.getTables());
-            model.addObject("extra", spot.getRemarks());
             if(spot.isElectricity() == true) {
                 model.addObject("electricity", "ja");
-            } else model.addObject("electricity", "nee");*/
+            } else model.addObject("electricity", "nee");
         }
         return model;
+    }
+    
+    @PostMapping("/updatespot")
+    public ModelAndView updateSpot(@RequestParam("spotID") Long spotID){
+        ModelAndView model = new ModelAndView("updatespot");
+        Spot spot = spotService.geSpotById(spotID);
+        String checked = "checked";
+        switch(spot.getChairs()){
+            case 0:
+                model.addObject("ch0", checked);
+                model.addObject("ch1", "");
+                model.addObject("ch2", "");
+                break;
+            case 1:
+                model.addObject("ch0", "");
+                model.addObject("ch1", checked);
+                model.addObject("ch2", "");
+                break;
+            case 2:
+                model.addObject("ch0", "");
+                model.addObject("ch1", "");
+                model.addObject("ch2", checked);
+                break;
+            default:
+                model.addObject("ch0", "");
+                model.addObject("ch1", "");
+                model.addObject("ch2", checked);
+        }
+
+        switch(spot.getTables()){
+            case 0:
+                model.addObject("tb0", checked);
+                model.addObject("tb1", "");
+                break;
+            case 1:
+                model.addObject("tb0", "");
+                model.addObject("tb1", checked);
+                break;
+            default:
+                model.addObject("tb0", checked);
+                model.addObject("tb1", "");
+        }
+
+        if(spot.isElectricity()){
+            model.addObject("el", checked);
+        } else {
+            model.addObject("el", "");
+        }
+
+        model.addObject("spot", spot);
+	return model;
+    }
+    
+    @PostMapping("/cancelspot")
+    public ModelAndView cancelSpot(@RequestParam("spotID") Long spotID){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Users user = usersService.getUserByUserName(auth.getName());
+        Spot spot = spotService.geSpotById(spotID);
+        ModelAndView model = new ModelAndView("confirmspotcancel");
+        model.addObject("spot", spot);
+	return model;
+    }
+    
+    @PostMapping("/confirmspotcancel")
+    public String confirmCancelSpot(@RequestParam("spotID") Long spotID, @RequestParam("submit") String action, RedirectAttributes redirectAttributes){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Users user = usersService.getUserByUserName(auth.getName());
+        Spot spot = spotService.geSpotById(spotID);
+        if(action.equals("ja")){
+            redirectAttributes.addFlashAttribute("spotnr", spot.getSpotNo());
+            redirectAttributes.addFlashAttribute("annuleer", "annuleer");
+            redirectAttributes.addFlashAttribute("user", user);
+            spotService.removeUserFromSpot(spot.getId());
+            //new EmailSender().sendCancelationMail(spot, user.getCompanyName(), user.getEmail());
+            return "redirect:/index";
+        }
+	return "redirect:/myspot";
+    }
+    
+    @PostMapping("/confirmupdatespot")
+    public String confirmUpdateSpot(@RequestParam("spotID") Long spotID, @RequestParam("chairs") int chairs, @RequestParam("tables") int tables, @RequestParam(value="electricity", required=false) String electricity, @RequestParam("extra") String extra, RedirectAttributes redirectAttributes){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Users user = usersService.getUserByUserName(auth.getName());
+        Spot spot = spotService.geSpotById(spotID);
+        spot.setChairs(chairs);
+        spot.setTables(tables);
+        if(!electricity.isEmpty()){
+            spot.setElectricity(true);
+        }else{
+            spot.setElectricity(false);
+        }
+        spot.setRemarks(extra);
+        spotService.save(spot);
+        redirectAttributes.addFlashAttribute("spotnr", spot.getSpotNo());
+        redirectAttributes.addFlashAttribute("update", "update");
+        redirectAttributes.addFlashAttribute("user", user);
+
+        /*try {
+                new EmailSender().sendUpdateMail(spot, user.getCompanyName(), user.getEmail());
+        } catch (MessagingException e) {
+                throw new ServletException(e.getMessage(), e);
+        }*/
+
+        return "redirect:/index";
     }
 }
