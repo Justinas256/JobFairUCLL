@@ -5,17 +5,14 @@
  */
 package jobFair.controller;
 
-import jobFair.model.RoleEnum;
-import jobFair.model.Spot;
+
+import java.security.Principal;
 import jobFair.model.Users;
-import jobFair.service.SpotService;
 import jobFair.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 /**
  *
@@ -25,23 +22,20 @@ import org.springframework.web.servlet.ModelAndView;
 public class HomeController {
     
     @Autowired
-    UsersService usersService;
+    private UsersService usersService;
     
-    @Autowired
-    SpotService spotService;
-    
-    @GetMapping("/index")
-    public ModelAndView viewHome(){
-        ModelAndView model = new ModelAndView("index");
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Users user = usersService.getUserByUserName(auth.getName());
-
-        if (user!=null) {
-            Spot spot = spotService.getSpotFromUser(user);
-            if (spot != null) {
-                model.addObject("spotnr", spot.getSpotNo());
+    @GetMapping("/home")
+    public String viewHome(Model model, Principal user){
+        if(user != null) {
+            String userName = user.getName();
+            Users company = usersService.getUserByUserName(userName);
+            if(company != null) {
+                String companyName = company.getCompanyName();
+                model.addAttribute("companyName", companyName);
             }
+            
         }
-        return model;  
+       
+        return "index";  
     }
 }

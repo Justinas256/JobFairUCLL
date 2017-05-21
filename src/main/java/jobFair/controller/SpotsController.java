@@ -207,7 +207,7 @@ public class SpotsController {
         if(action.equals("ja")){
             redirectAttributes.addFlashAttribute("spotnr", spot.getSpotNo());
             redirectAttributes.addFlashAttribute("annuleer", "annuleer");
-            redirectAttributes.addFlashAttribute("user", user);
+            redirectAttributes.addFlashAttribute("companyName", user.getCompanyName());
             spotService.removeUserFromSpot(spot.getId());
             //new EmailSender().sendCancelationMail(spot, user.getCompanyName(), user.getEmail());
             return "redirect:/index";
@@ -231,7 +231,7 @@ public class SpotsController {
         spotService.save(spot);
         redirectAttributes.addFlashAttribute("spotnr", spot.getSpotNo());
         redirectAttributes.addFlashAttribute("update", "update");
-        redirectAttributes.addFlashAttribute("user", user);
+        redirectAttributes.addFlashAttribute("companyName", user.getCompanyName());
 
         /*try {
                 new EmailSender().sendUpdateMail(spot, user.getCompanyName(), user.getEmail());
