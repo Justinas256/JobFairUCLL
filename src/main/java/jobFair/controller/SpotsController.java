@@ -210,7 +210,7 @@ public class SpotsController {
             redirectAttributes.addFlashAttribute("companyName", user.getCompanyName());
             spotService.removeUserFromSpot(spot.getId());
             //new EmailSender().sendCancelationMail(spot, user.getCompanyName(), user.getEmail());
-            return "redirect:/index";
+            return "redirect:/home";
         }
 	return "redirect:/myspot";
     }
@@ -239,6 +239,6 @@ public class SpotsController {
                 throw new ServletException(e.getMessage(), e);
         }*/
 
-        return "redirect:/index";
+        return "redirect:/home";
     }
 }
