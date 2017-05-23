@@ -8,6 +8,7 @@ package jobFair.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.mail.MessagingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,7 +16,7 @@ import javax.servlet.http.Part;
 import javax.validation.Valid;
 import jobFair.model.RoleEnum;
 import jobFair.model.Users;
-import jobFair.model.EmailSender;
+import jobFair.utils.EmailSender;
 import jobFair.service.SpotService;
 import jobFair.service.UsersService;
 import jobFair.utils.CsvReader;
@@ -57,7 +58,7 @@ public class UsersController {
     }
     
     @PostMapping("/signupcompany")
-    public String saveUser(@ModelAttribute("users") @Valid Users user, BindingResult bindingResult, RedirectAttributes redirectAttributes) throws ServletException{  
+    public String saveUser(@ModelAttribute("users") @Valid Users user, BindingResult bindingResult, RedirectAttributes redirectAttributes) throws ServletException, MessagingException{  
         String tempPass;
         if (bindingResult.hasErrors()) {
             return "signupuser";
@@ -68,11 +69,11 @@ public class UsersController {
             usersService.save(user);
             String succes = "Het bedrijf " + user.getCompanyName() + " is toegevoegd.";
             redirectAttributes.addFlashAttribute("success", succes);
-            /*try {
+            try {
                 new EmailSender().sendNewCompanyMail(user.getUsername(), tempPass, user.getEmail());
             } catch (MessagingException e) {
 		throw new ServletException(e.getMessage(), e);
-            }*/
+            }
 	
             return "redirect:/admin";
         }

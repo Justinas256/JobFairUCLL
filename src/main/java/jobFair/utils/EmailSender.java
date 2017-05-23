@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jobFair.model;
+package jobFair.utils;
 
 /**
  *
@@ -22,10 +22,21 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import jobFair.model.EmailData;
+import jobFair.model.Spot;
+import jobFair.model.Users;
+import jobFair.service.EmailDataService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+
+@Service
 public class EmailSender {
-
-	private String username = "scrumbags.06", password = "tttttttt";
+    @Autowired
+    private EmailDataService emailDataService;
+    
+	//private String username = "scrumbags.06", password = "tttttttt";
+    private String username = "greta.karal", password = "melynaspalva";
 	private String messageHeader = "<meta charset=\"ISO-8859-1\">";
 	private String indexPage = "http://ipajax.cyclone2.khleuven.be:38033/jobfair_group4/";
 	private Properties properties;
@@ -146,8 +157,7 @@ public class EmailSender {
 		this.sendMultipleFromGMail(subject, message, emailreceivers);
 	}
 
-	public void sendEndOfRegistrationMail(Calendar deadline, List<String> emailreceivers) throws MessagingException {
-		String subject = "Jobbeurs 2017 - UCLL Leuven: Herinnering";
+	public void sendEndOfRegistrationMail(Calendar deadline, List<String> emailreceivers, String subject, String endMessage) throws MessagingException {
 		String message = messageHeader;
 		message += "Beste,<br><br>";
 		if (deadline==null) {
@@ -158,14 +168,8 @@ public class EmailSender {
 				+ new SimpleDateFormat("dd").format(date) + " "
 				+ new SimpleDateFormat("MMMM").format(date);
 		}
-		message	+= " eindigt de mogelijkheid om zelf je plaats je kiezen op onze jobbeurs. "
-				+ "U heeft nog even tijd om uw keuze te maken.<br>"
-				+ "Moest u uw keuze niet tijdig gemaakt hebben, zal onze verantwoordelijke "
-				+ "een willekeurige plaats voor u kiezen."
-				+ "<br>Tot binnenkort.<br><br>"
-				+ "--<br>"
-				+ "Mvg,<br>"
-				+ "Team Scrumbags";
+                endMessage = endMessage.replace("\n", "<br>");              
+                message += endMessage;
 		this.sendMultipleFromGMail(subject, message, emailreceivers);
 	}
 	
