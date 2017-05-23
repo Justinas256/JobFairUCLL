@@ -53,7 +53,7 @@
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <img src="img/standplaatsen-atrium-crop.png" usemap="#image-map-atrium" id="atrium" class="img-responsive respmap">
-        <map name="image-map-atrium" id="atrium-map"class="img-responsive">
+        <map name="image-map-atrium" id="atrium-map" class="img-responsive">
             <c:forEach var="h" items="${atrium}">
         		<area  alt="${h.id}" id="${h.id}" coords="${h.coords}" shape="${h.shape}"
         			<c:choose>
@@ -170,6 +170,21 @@ window.setInterval(function(){
                 data.fillOpacity = '0.6';
                 $('.mine').data('maphilight', data).trigger('alwaysOn.maphilight'); 
             });
+</script>
+
+<script>
+$(document).ready(function() {
+    $("map").on("click", function(event) {
+        var x = event.pageX - this.offsetLeft;
+        var y = event.pageY - this.offsetTop;
+        alert("X Coordinate: " + x + " Y Coordinate: " + y);
+    });
+    $("img").on("click", function(event) {
+        var x = event.pageX - this.offsetLeft;
+        var y = event.pageY - this.offsetTop;
+        alert("X Coordinate: " + x + " Y Coordinate: " + y);
+    });
+    });
 </script>
 
 		
