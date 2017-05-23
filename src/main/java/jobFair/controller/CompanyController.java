@@ -43,8 +43,7 @@ public class CompanyController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Users user = usersService.getUserByUserName(auth.getName());
         ModelAndView model = new ModelAndView("account");
-        model.addObject("contactname", user.getContactName());
-        model.addObject("email", user.getEmail());
+        model.addObject("user", user);
 	return model;		
     }
     
@@ -63,7 +62,7 @@ public class CompanyController {
             return "redirect:/account";
         }
 
-        if(contactname == null || email == null || contactname.isEmpty() || email.isEmpty()){
+        if(contactname.isEmpty() || email.isEmpty()){
             redirectAttributes.addFlashAttribute("errors", "Gelieve gegevens op te geven");
             return "redirect:/account";
         }

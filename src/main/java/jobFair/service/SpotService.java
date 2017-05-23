@@ -99,11 +99,32 @@ public class SpotService {
         }
     }
     
-    public Spot getSpotFromUser(Long userID){
+    public Spot getSpotFromUser(Users user){
+        List<Spot> spots = this.findAll();
+        for(Spot spot: spots) {
+            if(spot.getUser() != null && spot.getUser().equals(user)) 
+                return spot;
+        }
+        return null;
+    }
+    
+    public Spot geSpotByNr(String nr) {
         return this.findAll()
                 .stream()
-                .filter(spot -> spot.getUser().getId().equals(userID))
+                .filter(spot -> spot.getSpotNo().equals(nr))
                 .findFirst()
                 .get();
+    }
+    
+    public void removeUserFromSpot(Long spotID) {
+        Spot spot = this.geSpotById(spotID);
+        if(spot != null){
+           spot.setChairs(2);
+           spot.setTables(2);
+           spot.setElectricity(true);
+           spot.setRemarks(null);
+           spot.setUser(null);
+           repository.save(spot);
+        }
     }
 }

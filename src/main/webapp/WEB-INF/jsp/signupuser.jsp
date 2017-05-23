@@ -11,7 +11,7 @@
 
 <div class="row">	
     <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6">
-        <form:form id="users" method="POST" action="saveuser" commandName="users" modelAttibute="users" novalidate="novalidate">
+        <form:form id="users" method="POST" action="signupcompany" commandName="users" modelAttibute="users" novalidate="novalidate">
             <form:errors path="*" modelAttibute="errors"/>
             <legend class="sr-only">Registreer bedrijf</legend>
             <td><form:hidden path="id" /></td>

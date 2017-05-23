@@ -40,7 +40,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <h1 class="h1-normal"><a class="navbar-brand" href="Controller?action=home">Jobfair 2017</a></h1>
+                    <h1 class="h1-normal"><a class="navbar-brand" href="home">Jobfair 2017</a></h1>
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
