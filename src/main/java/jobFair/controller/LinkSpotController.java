@@ -6,17 +6,19 @@
 package jobFair.controller;
 
 import java.util.List;
+import javax.mail.MessagingException;
+import javax.servlet.ServletException;
 import jobFair.model.Spot;
 import jobFair.model.Users;
 import jobFair.service.SpotService;
 import jobFair.service.UsersService;
+import jobFair.utils.EmailSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 /**
  *
@@ -42,9 +44,15 @@ public class LinkSpotController {
     
     @PostMapping("/linkSpot")
     public String linkSpotManuallySave(@RequestParam("spotID") String spotID, 
-                                        @RequestParam("userID") String userID) {
+                                        @RequestParam("userID") String userID) throws ServletException {
         Users user = usersService.geUserById(Long.parseLong(userID));
         spotService.addUser(Long.parseLong(spotID), user);
+        
+        try {
+            new EmailSender().sendUserLinkedToSpotMail(spotID, user.getCompanyName(), user.getEmail());
+        } catch (MessagingException e) {
+            throw new ServletException(e.getMessage(), e);
+        }
         
         return "redirect:linkSpot";
     }

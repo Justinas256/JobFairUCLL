@@ -8,7 +8,6 @@ package jobFair.controller;
 import java.util.List;
 import javax.mail.MessagingException;
 import javax.servlet.ServletException;
-import jobFair.model.JobFairData;
 import jobFair.model.Spot;
 import jobFair.model.Users;
 import jobFair.service.JobFairDataService;
@@ -25,7 +24,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import jobFair.model.EmailSender;
+import jobFair.utils.EmailSender;
 
 /**
  *
@@ -73,52 +72,6 @@ public class SpotsController {
         List<Spot> spots = spotService.sortTakenSpots();
         model.addAttribute("spots", spots);
         return "spotoverview";
-    }
-    
-    
-    @GetMapping("/fill")
-    public String fillDatabase() {
-        this.createData();
-        return "login";
-    }
-    
-    
-    public void createData() {
-        spotService.save(new Spot("!", 2,3,true,"cool", null));
-        spotService.save(new Spot("2", 1,1,false,"oh yeah!", null));
-        
-        usersService.save(new Users("Name", "Company", "email@gmail.com", "user", "pass", "", "COMPANY", null));
-   
-        Users user = new Users();
-        user.setPassword(passwordEncode.encodePassword("admin"));
-        user.setRole("ADMIN");
-        user.setUsername("admin");
-        user.setSalt("");
-        user.setCompanyName("admin");
-        user.setContactName("admin");
-        user.setEmail("Email@gmail.com");
-        usersService.save(user);
-        
-        jobFairDataService.save(new JobFairData("Job fair", "2017","", null));
-        
-        user = new Users();
-        user.setPassword(passwordEncode.encodePassword("company"));
-        user.setRole("COMPANY");
-        user.setUsername("company");
-        user.setSalt("");
-        user.setCompanyName("company name");
-        user.setContactName("contact name");
-        user.setEmail("contact@gmail.com");
-        usersService.save(user);
-        
-        Spot spot = new Spot();
-        spot.setChairs(2);
-        spot.setElectricity(true);
-        spot.setRemarks("ramarks");
-        spot.setSpotNo("42");
-        spot.setTables(3);
-        spotService.save(spot);
-        
     }
     
     @GetMapping("/myspot")
@@ -200,7 +153,7 @@ public class SpotsController {
     }
     
     @PostMapping("/confirmspotcancel")
-    public String confirmCancelSpot(@RequestParam("spotID") Long spotID, @RequestParam("submit") String action, RedirectAttributes redirectAttributes){
+    public String confirmCancelSpot(@RequestParam("spotID") Long spotID, @RequestParam("submit") String action, RedirectAttributes redirectAttributes) throws ServletException{
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Users user = usersService.getUserByUserName(auth.getName());
         Spot spot = spotService.geSpotById(spotID);
@@ -209,14 +162,18 @@ public class SpotsController {
             redirectAttributes.addFlashAttribute("annuleer", "annuleer");
             redirectAttributes.addFlashAttribute("companyName", user.getCompanyName());
             spotService.removeUserFromSpot(spot.getId());
-            //new EmailSender().sendCancelationMail(spot, user.getCompanyName(), user.getEmail());
+            try{
+                new EmailSender().sendCancelationMail(spot, user.getCompanyName(), user.getEmail());
+            } catch (MessagingException e) {
+                throw new ServletException(e.getMessage(), e);
+            }
             return "redirect:/home";
         }
 	return "redirect:/myspot";
     }
     
     @PostMapping("/confirmupdatespot")
-    public String confirmUpdateSpot(@RequestParam("spotID") Long spotID, @RequestParam("chairs") int chairs, @RequestParam("tables") int tables, @RequestParam(value="electricity", required=false) String electricity, @RequestParam("extra") String extra, RedirectAttributes redirectAttributes){
+    public String confirmUpdateSpot(@RequestParam("spotID") Long spotID, @RequestParam("chairs") int chairs, @RequestParam("tables") int tables, @RequestParam(value="electricity", required=false) String electricity, @RequestParam("extra") String extra, RedirectAttributes redirectAttributes) throws ServletException{
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Users user = usersService.getUserByUserName(auth.getName());
         Spot spot = spotService.geSpotById(spotID);
@@ -233,11 +190,11 @@ public class SpotsController {
         redirectAttributes.addFlashAttribute("update", "update");
         redirectAttributes.addFlashAttribute("companyName", user.getCompanyName());
 
-        /*try {
+        try {
                 new EmailSender().sendUpdateMail(spot, user.getCompanyName(), user.getEmail());
         } catch (MessagingException e) {
                 throw new ServletException(e.getMessage(), e);
-        }*/
+        }
 
         return "redirect:/home";
     }

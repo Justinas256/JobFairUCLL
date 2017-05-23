@@ -5,11 +5,9 @@
  */
 package jobFair.controller;
 
-import java.io.IOException;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import jobFair.model.Users;
-import jobFair.model.EmailSender;
+import jobFair.utils.EmailSender;
 import jobFair.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,8 +18,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 import javax.mail.MessagingException;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
@@ -56,11 +52,11 @@ public class AdminController {
             usersService.save(user);
             String success = "De beheerder " + user.getUsername()+ " is toegevoegd.";
             redirectAttributes.addFlashAttribute("success", success);
-            /*try {
+            try {
                 new EmailSender().sendNewAdminMail(user.getUsername(), tempPass, user.getEmail());
             } catch (MessagingException e) {
                 throw new ServletException(e.getMessage(), e);
-            }*/
+            }
             return "redirect:/admin";
         }
     }
@@ -72,7 +68,7 @@ public class AdminController {
         return modelAndView;
     }	
  
-    @PostMapping("/deleteAdmin")
+    @PostMapping("/deleteadmin")
     public String deleteAdmin(Model model, @RequestParam("adminID") String adminID, 
                                             @RequestParam("password") String password) {
         
