@@ -11,6 +11,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 /**
  *
@@ -26,19 +28,39 @@ public class SpotData implements Serializable {
     @Column
     private String coords;
     
-    @Column
-    private String shape;
-    
-    @Column
-    private String location;
+    @ManyToOne
+    @JoinColumn(name = "map_spots_id")
+    private Map map;
 
-    public SpotData(Long id, String coords, String shape, String location) {
+    public SpotData(Long id, String coords, Map map) {
         this.id = id;
         this.coords = coords;
-        this.shape = shape;
-        this.location = location;
+        this.map = map;
+    }
+    
+    public SpotData(String coords, Map map) {
+        this.id = id;
+        this.coords = coords;
+        this.map = map;
     }
 
+    public SpotData(Long id, String coords) {
+        this.id = id;
+        this.coords = coords;
+    }
+
+    public Map getMap() {
+        return map;
+    }
+
+    public void setMap(Map map) {
+        this.map = map;
+    }
+    
+     public SpotData(String coords, String location) {
+        this.coords = coords;
+    }
+    
     public SpotData() {
     }
 
@@ -46,26 +68,10 @@ public class SpotData implements Serializable {
         return coords;
     }
 
-    public String getShape() {
-        return shape;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
     public void setCoords(String coords) {
         this.coords = coords;
     }
 
-    public void setShape(String shape) {
-        this.shape = shape;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-    
     public Long getId() {
         return id;
     }

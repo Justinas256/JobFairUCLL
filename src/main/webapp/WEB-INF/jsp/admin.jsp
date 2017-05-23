@@ -88,6 +88,25 @@
 		<a class="btn btn-primary" href = "downloadCompanies"><i class="fa fa-download"></i> Download lijst</a>
 	</div>
 </div>
+                        
+<div class="row">
+	<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6">
+		<h4 class="bordboth4"><i class="fa fa-map-marker"></i> Map</h4>
+                    <div class="form-group form-inline">
+                        <form method="POST" action="uploadMap" enctype="multipart/form-data">
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                            <input type="text" name="name" class="form-control" id="name" placeholder="Name">
+                            <input type="file" accept="image/*" class="form-control" id="image" name="image" value="Upload file">
+                            <button type="submit" class="btn btn-primary" value="Upload"><i class="fa fa-upload"></i> Upload</button>
+                        </form>
+                        <a class="btn btn-primary" href = "maps">Show all maps</a>
+                    </div>
+                            
+                </form>
+		
+	</div>
+</div>                       
+                        
 <div class="row">
 	<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6">
 		<h4 class="bordboth4"><i class="fa fa-file-text"></i> Handleiding</h4>
