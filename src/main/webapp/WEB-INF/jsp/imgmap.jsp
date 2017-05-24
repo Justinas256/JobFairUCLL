@@ -29,13 +29,13 @@
 
                             <area  alt="${h.id}" id="${h.id}" coords="${h.coords}" shape="poly"
                                     <c:choose>
-                                            <c:when test="${h.id==mine}">
+                                            <c:when test="${h.spot.id==mine}">
                                                     title="Mijn plaats"
-                                                    href="Controller?action=myspot"
+                                                    href="myspot"
                                                     class="mine"
                                             </c:when>
                                             <c:when test="${empty bezet}">
-                                                    href="Controller?action=showopt&id=${h.id}"
+                                                    href="showopt&id=${h.spot.id}"
                                                     class="bezet"
                                             </c:when>
                                             <c:otherwise>
@@ -45,7 +45,7 @@
                                                             class="bezet"
                                                     </c:if>
                                             </c:forEach>
-                                                    href="Controller?action=showopt&id=${h.id}"
+                                                    href="showopt&id=${h.spot.id}"
                                     </c:otherwise>
                                     </c:choose>>
                     </c:forEach>
