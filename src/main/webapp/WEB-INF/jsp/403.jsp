@@ -1,27 +1,15 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<link href="css/app.css"rel="stylesheet"
-	type="text/css"></link>
-<title>Spring Security Example - ProgrammingFree</title>
-</head>
-<body class="security-app">
-	<div class="details">
-	<h2>Spring Security - JDBC Authentication</h2>
-		<a href="http://www.programming-free.com/2015/09/spring-security-jdbc-authentication.html" class="button green small">Tutorial</a> 
-		<a href="https://github.com/priyadb/SpringSecurityJdbcApp/archive/master.zip"
-			class="button red small">Download</a>
-	</div>
-	<div class="lc-block">		
-		<div class="alert-danger">
-			<h3>You do not have permission to access this page!</h3>	
-		</div>
-		<form action="/logout" method="post">
-			<input type="submit" class="button red big" value="Sign in as different user" /> <input
-				type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-		</form>		
-	</div>	
-</body>
-</html>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<jsp:include page="header.jsp">
+        <jsp:param value="Jobbeurs - Home" name="title"/>
+        <jsp:param value="current" name="home"/>
+        <jsp:param value="UCLL Jobbeurs 2017" name="h2"/>
+</jsp:include>
+           
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6">
+                <h3>You do not have permission to access this page!</h3>	
+    </div>	
+</div>    
+    
+<jsp:include page="footer.jsp"/>
