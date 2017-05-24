@@ -26,7 +26,7 @@
                                     <%--
                                         <td><a href="Controller?action=showopt&id=<c:out value="${spot.spotID}"/>">${spot.spotID}</a></td>
                                     --%>
-                                        <td><a href="Controller?action=showopt&id=<c:out value="${spot.id}"/>">${spot.spotNo}</a></td>
+                                        <td><a href="showopt&id=<c:out value="${spot.id}"/>">${spot.spotNo}</a></td>
 					<td>${spot.user.companyName}</td>
 					<td></td>
 					<td></td>
