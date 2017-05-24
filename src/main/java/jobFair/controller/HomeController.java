@@ -7,6 +7,8 @@ package jobFair.controller;
 
 
 import java.security.Principal;
+import java.util.List;
+import jobFair.model.Spot;
 import jobFair.model.Users;
 import jobFair.service.MapService;
 import jobFair.service.SpotDataService;
@@ -45,10 +47,15 @@ public class HomeController {
                 String companyName = company.getCompanyName();
                 model.addAttribute("companyName", companyName);
             }
-            
+            List<Spot> spots = usersService.getUserByUserName(userName).getSpots();
+            if(!(spots.isEmpty())) {
+                 model.addAttribute("mine", spots.get(0).getId());
+            }
+
         }
         model.addAttribute("maps", mapService.findAll());
         model.addAttribute("bezet", spotService.takenSpots());
+        
         
         return "index";  
     }
