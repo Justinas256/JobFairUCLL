@@ -180,10 +180,10 @@ public class SpotsController {
         Spot spot = spotService.geSpotById(spotID);
         spot.setChairs(chairs);
         spot.setTables(tables);
-        if(!electricity.isEmpty()){
-            spot.setElectricity(true);
-        }else{
+        if(electricity == null || electricity.isEmpty()){
             spot.setElectricity(false);
+        }else{
+            spot.setElectricity(true);
         }
         spot.setRemarks(extra);
         spotService.save(spot);
@@ -240,8 +240,7 @@ public class SpotsController {
             @RequestParam(value="electricity", required=false) String electricity, @RequestParam("extra") String extra, RedirectAttributes redirectAttributes)
             throws ServletException{
        	
-	boolean electricityBool = false;
-        if(electricity != null){
+        if(electricity != null && !electricity.isEmpty()){
                 electricityBool = true;
         }
         
