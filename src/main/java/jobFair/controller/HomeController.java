@@ -8,7 +8,9 @@ package jobFair.controller;
 
 import java.security.Principal;
 import jobFair.model.Users;
+import jobFair.service.MapService;
 import jobFair.service.SpotDataService;
+import jobFair.service.SpotService;
 import jobFair.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,6 +30,12 @@ public class HomeController {
     @Autowired
     private SpotDataService spotDataService;
     
+    @Autowired
+    private SpotService spotService;
+    
+    @Autowired
+    private MapService mapService;
+    
     @GetMapping("/home")
     public String viewHome(Model model, Principal user){
         if(user != null) {
@@ -39,8 +47,8 @@ public class HomeController {
             }
             
         }
-       
-        model.addAttribute("hemis", spotDataService.findAll());
+        model.addAttribute("maps", mapService.findAll());
+        model.addAttribute("bezet", spotService.takenSpots());
         
         return "index";  
     }

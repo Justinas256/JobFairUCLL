@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -43,7 +44,24 @@ public class Spot implements Serializable {
     @ManyToOne
     @JoinColumn(name = "user_spots_id")
     private Users user;
+    
+    @OneToOne
+    @JoinColumn(name = "spotData_spots_id")
+    private SpotData spotData;
 
+    public Spot(Long id, String spotNo, int tables, int chairs, boolean electricity, String remarks, Users user, SpotData spotData) {
+        this.id = id;
+        this.spotNo = spotNo;
+        this.tables = tables;
+        this.chairs = chairs;
+        this.electricity = electricity;
+        this.remarks = remarks;
+        this.user = user;
+        this.spotData = spotData;
+    }
+    
+    
+    
     public Spot(Long id, String spotNo, int tables, int chairs, boolean electricity, String remarks, Users user) {
         this.id = id;
         this.spotNo = spotNo;
@@ -63,6 +81,20 @@ public class Spot implements Serializable {
         this.user = user;
     }
 
+    public Spot(String spotNo, SpotData spotData) {
+        this.spotNo = spotNo;
+        this.spotData = spotData;
+    }
+
+
+    public SpotData getSpotData() {
+        return spotData;
+    }
+
+    public void setSpotData(SpotData spotData) {
+        this.spotData = spotData;
+    }
+    
     public Users getUser() {
         return user;
     }

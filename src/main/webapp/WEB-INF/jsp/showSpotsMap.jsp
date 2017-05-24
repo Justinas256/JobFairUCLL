@@ -22,32 +22,20 @@
 	
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <img src="img/standplaatsen-crop.png" usemap="#image-map-hemis" id="hemis" class="img-responsive respmap">
+        
+        <div class="form-group">
+            <div class="btn-group" role="group" aria-label="..">
+                <a type="button" class="btn btn-default" href="${pageContext.request.contextPath}/addspotmap?mapID=${map.id}">Add spot</a>
+                <a type="button" class="btn btn-default" href="maps">Show maps</a>
+            </div>  
+        </div>
+        
+        <img src="${pageContext.request.contextPath}/map/image/${map.id}" usemap="#image-map-hemis" id="hemis" class="img-responsive respmap">
         <map name="image-map-hemis" id="hemis-map"  class="img-responsive">
-            <area  alt="bla" id="1" coords="203,364,235,405,292,358,260,318" shape="poly">
-        	<c:forEach var="spot" items="${map.spotsData}">
-                    <area  alt="${spot.id}" id="${spot.id}" coords="${spot.coords}" shape="poly"
-                        <c:choose>
-                            <c:when test="${h.id==mine}">
-                                    title="Mijn plaats"
-                                    href="Controller?action=myspot"
-                                    class="mine"
-                            </c:when>
-                            <c:when test="${empty bezet}">
-                                    href="Controller?action=showopt&id=${h.id}"
-                            </c:when>
-                            <c:otherwise>
-                                <c:forEach var="b" items="${bezet}">
-                                    <c:if test="${h.id==b.spotID}">
-                                        title="${b.user.companyName}"
-                                        class="bezet"
-                                    </c:if>
-                                </c:forEach>
-                                href="Controller?action=showopt&id=${h.id}"
-                            </c:otherwise>
-                        </c:choose>
-                        >
-        	</c:forEach>
+            <c:forEach var="spot" items="${map.spotsData}">
+                <area  alt="${spot.id}" id="${spot.id}" coords="${spot.coords}" shape="poly" class="bezet"
+                       href="${pageContext.request.contextPath}/mapeditspot?spotID=${spot.id}">
+            </c:forEach>
         </map>
     </div>
 </div>
@@ -140,20 +128,3 @@ window.setInterval(function(){
                 $('.mine').data('maphilight', data).trigger('alwaysOn.maphilight'); 
             });
 </script>
-
-<script>
-$(document).ready(function() {
-    $("map").on("click", function(event) {
-        var x = event.pageX - this.offsetLeft;
-        var y = event.pageY - this.offsetTop;
-        alert("X Coordinate: " + x + " Y Coordinate: " + y);
-    });
-    $("img").on("click", function(event) {
-        var x = event.pageX - this.offsetLeft;
-        var y = event.pageY - this.offsetTop;
-        alert("X Coordinate: " + x + " Y Coordinate: " + y);
-    });
-    });
-</script>
-
-		

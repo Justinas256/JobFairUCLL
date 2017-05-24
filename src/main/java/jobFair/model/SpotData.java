@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -31,7 +32,17 @@ public class SpotData implements Serializable {
     @ManyToOne
     @JoinColumn(name = "map_spots_id")
     private Map map;
+    
+    @OneToOne(mappedBy = "spotData")
+    private Spot spot;
 
+    public SpotData(Long id, String coords, Map map, Spot spot) {
+        this.id = id;
+        this.coords = coords;
+        this.map = map;
+        this.spot = spot;
+    }
+    
     public SpotData(Long id, String coords, Map map) {
         this.id = id;
         this.coords = coords;
@@ -47,6 +58,14 @@ public class SpotData implements Serializable {
     public SpotData(Long id, String coords) {
         this.id = id;
         this.coords = coords;
+    }
+
+    public Spot getSpot() {
+        return spot;
+    }
+
+    public void setSpot(Spot spot) {
+        this.spot = spot;
     }
 
     public Map getMap() {

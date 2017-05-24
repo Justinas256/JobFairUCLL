@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.transaction.Transactional;
 import jobFair.dao.SpotDataRepository;
+import jobFair.model.Spot;
 import jobFair.model.SpotData;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,6 +22,9 @@ import org.springframework.stereotype.Service;
 @Service
 @Transactional
 public class SpotDataService {
+    
+    @Autowired
+    private SpotService spotService;
     
     private SpotDataRepository repository;
 
@@ -48,6 +53,15 @@ public class SpotDataService {
     }
     
     public void delete(SpotData spotData) {
+        Spot spot = spotData.getSpot();
+        if(spot != null) {
+            spot.setUser(null);
+            spot.setSpotData(null);
+            spotService.save(spot);
+            spotData.setSpot(null);
+            spotService.delete(spot);
+            this.save(spotData);
+        }
 	repository.delete(spotData);
     }
 }
