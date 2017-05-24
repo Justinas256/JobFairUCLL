@@ -52,7 +52,7 @@ public class MapController {
             Map map = new Map(name, image.getBytes(), null);
             mapService.save(map);
         } catch (Exception ex) {
-            redirectAttributes.addFlashAttribute("errors", "Map was not saved"); 
+            redirectAttributes.addFlashAttribute("errors", "Map was not saved " + ex.getLocalizedMessage()); 
             return "redirect:/admin";
         }
         redirectAttributes.addFlashAttribute("success", "Map " + name + " was saved successfully"); 

@@ -6,7 +6,7 @@
     <groupId>JobFair</groupId>
     <artifactId>JobFair</artifactId>
     <version>0.1</version>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
 
     <name>JobFair</name>
     <description>JobFair project</description>
@@ -125,13 +125,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>com.google.appengine</groupId>
@@ -148,6 +141,31 @@
                       <targetPath>sources</targetPath>
                     </resource>
                   </webResources>
+                </configuration>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.glassfish.maven.plugin</groupId>
+                <artifactId>maven-glassfish-plugin</artifactId>
+                <version>2.1</version>
+                <configuration>
+                    <glassfishDirectory>${payara.home}/glassfish</glassfishDirectory>
+                    <user>${payara.user}</user>
+                    <passwordFile>${payara.passfile}</passwordFile>
+                    <debug>true</debug>
+                    <terse>false</terse>
+                    <echo>true</echo>
+                    <domain>
+                        <name>domain1</name>
+                        <adminPort>4848</adminPort>
+                        <httpPort>8080</httpPort>
+                    </domain>
+                    <components>
+                        <component>
+                            <name>${project.artifactId}</name>
+                            <artifact>target/${project.build.finalName}.war</artifact>
+                        </component>
+                    </components>
                 </configuration>
             </plugin>
                    
