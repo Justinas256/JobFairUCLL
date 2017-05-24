@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jobFair.utils.EmailSender;
+import org.springframework.web.bind.annotation.PathVariable;
 
 /**
  *
@@ -197,5 +198,111 @@ public class SpotsController {
         }
 
         return "redirect:/home";
+    }
+    
+    @PostMapping("/spotoptions")
+    public String setSpotOptions(@RequestParam("spotID") Long spotID, @RequestParam("chairs") int chairs, @RequestParam("tables") int tables,
+            @RequestParam(value="electricity", required=false) String electricity, @RequestParam("extra") String extra, RedirectAttributes redirectAttributes)
+			throws ServletException, MessagingException{
+        boolean electricityBool = false;
+        if(electricity != null){
+                electricityBool = true;
+        }
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Users user = usersService.getUserByUserName(auth.getName());
+
+        Spot spot = spotService.geSpotById(spotID);
+        spot.setUser(user);
+        spot.setTables(tables);
+        spot.setChairs(chairs);
+        spot.setRemarks(extra);
+        spot.setElectricity(electricityBool);
+        spotService.save(spot);
+
+        redirectAttributes.addFlashAttribute("spotnr", spotID);
+        redirectAttributes.addFlashAttribute("reserved", "Uw plaats werd gereserveerd. U ontvangt een mail ter bevestiging.");
+        
+        try {
+            new EmailSender().sendConfirmationMail(spot, user.getCompanyName(), user.getEmail());
+            if (spotService.freeSpots().size() < 10) {
+                new EmailSender().sendAlmostSoldOutMail(usersService.getAllAdminEmails());
+            }
+        } catch (MessagingException e) {
+            throw new ServletException(e.getMessage(), e);
+        }
+
+        redirectAttributes.addFlashAttribute("reserveer", "reserveer");
+        return "redirect:/home";
+    }
+   
+    @PostMapping("/spotadminoptions")
+    public String setSpotOptionsAdmin(@RequestParam("spotID") Long spotID, @RequestParam("chairs") int chairs, @RequestParam("tables") int tables,
+            @RequestParam(value="electricity", required=false) String electricity, @RequestParam("extra") String extra, RedirectAttributes redirectAttributes)
+            throws ServletException{
+       	
+	boolean electricityBool = false;
+        if(electricity != null){
+                electricityBool = true;
+        }
+        
+	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Users user = usersService.getUserByUserName(auth.getName());
+
+        Spot spot = spotService.geSpotById(spotID);
+        spot.setUser(user);
+        spot.setTables(tables);
+        spot.setChairs(chairs);
+        spot.setRemarks(extra);
+        spot.setElectricity(electricityBool);
+        spotService.save(spot);
+        
+        try {
+                new EmailSender().sendUserLinkedToSpotMail(spot.getSpotNo(), user.getCompanyName(), user.getEmail());
+        } catch (MessagingException e) {
+                throw new ServletException(e.getMessage(), e);
+        }
+
+        return "redirect:/home";
+    }
+    
+    @GetMapping("/showopt&id={id}")
+    public ModelAndView getSpotOptions(@PathVariable Long id, RedirectAttributes redirectAttributes){
+        ModelAndView model = new ModelAndView();
+        Spot spot = spotService.geSpotById(id);
+	model.addObject("spot", spot);
+
+	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Users user = usersService.getUserByUserName(auth.getName());
+
+        //Afhandelen van het reserveren van een tweede spot.
+        if (spotService.getSpotFromUser(user) != null)
+        {
+            redirectAttributes.addFlashAttribute("errors", "Er werd al een plaats gereserveerd voor " + user.getCompanyName() + ".");
+            model.setViewName("redirect:/home");
+            return model;
+        }
+
+        //Afhandelen van het reserveren van een reeds bezette spot.
+        if (spot.getUser()!= null && !spot.getUser().equals(user)) {
+            redirectAttributes.addFlashAttribute("userID", user.getId());
+            spot = spotService.getSpotFromUser(user);
+            if (spot != null){
+                redirectAttributes.addFlashAttribute("mine", spot.getSpotNo());
+            }
+            redirectAttributes.addFlashAttribute("bezet", spotService.takenSpots());
+            redirectAttributes.addFlashAttribute("errors", "Spot "+spot.getSpotNo()+" is al gereserveerd door het bedrijf "+user.getCompanyName()+".");
+
+            model.setViewName("redirect:/home");
+            return model;
+        }
+		
+        if (user.getRole().equals("ADMIN")) {
+            redirectAttributes.addFlashAttribute("freeUser", usersService.getUsersWithoutSpot());
+            model.setViewName("spotoptionsadmin");
+            return model;
+        } else {
+            model.setViewName("spotoptions");
+            return model;
+        }
     }
 }

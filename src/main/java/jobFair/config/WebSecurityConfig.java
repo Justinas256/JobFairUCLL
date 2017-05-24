@@ -50,10 +50,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
     protected void configure(HttpSecurity http) throws Exception {
       http.authorizeRequests()
         .antMatchers("/hello").access("hasRole('ADMIN')")  
-        .antMatchers("/admin", "/signupadmin", "/deleteadmin", "/setdeadline", "/linkSpot", "/endmail").access("hasRole('ADMIN')") 
+        /*.antMatchers("/admin", "/signupadmin", "/deleteadmin", "/setdeadline", "/linkSpot", "/endmail").access("hasRole('ADMIN')") 
         .antMatchers("/account", "/updatepassword", "/companies", "/companiesByContact", "/companiesByEmail", "/companiesBySpot", "/downloadCompanies").access("hasRole('COMPANY')")  
         .antMatchers("/updatespot", "/myspot", "/cancelspot", "/confirmspotcancel", "/confirmupdatespot").access("hasRole('COMPANY')")  
-        .antMatchers("/signupcompany", "/saveuserscvs", "/deletecompanies", "/deleteCompany").access("hasRole('ADMIN')")  
+        .antMatchers("/signupcompany", "/saveuserscvs", "/deletecompanies", "/deleteCompany").access("hasRole('ADMIN')") 
+        .antMatchers("/showopt&id={id}", "/spotadminoptions", "/spotoptions").access("hasRole('ADMIN') or hasRole('COMPANY')")  */             
         .anyRequest().permitAll()
         .and()
           .formLogin().loginPage("/login")
