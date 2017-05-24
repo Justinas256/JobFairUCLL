@@ -240,8 +240,9 @@ public class SpotsController {
             @RequestParam(value="electricity", required=false) String electricity, @RequestParam("extra") String extra, RedirectAttributes redirectAttributes)
             throws ServletException{
        	
+	boolean electricityBool = false;     
         if(electricity != null && !electricity.isEmpty()){
-                electricityBool = true;
+           electricityBool = true;
         }
         
 	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
