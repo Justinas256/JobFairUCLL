@@ -66,33 +66,28 @@ public class Users implements Serializable {
     private String password;
     
     @Column
-    private String salt;
-    
-    @Column
     private String role;
     
     @OneToMany(mappedBy = "user")
     private List<Spot> spots; 
 
-    public Users(Long id, String contactName, String companyName, String email, String username, String password, String salt, String role, List<Spot> spots) {
+    public Users(Long id, String contactName, String companyName, String email, String username, String password, String role, List<Spot> spots) {
         this.id = id;
         this.contactName = contactName;
         this.companyName = companyName;
         this.email = email;
         this.username = username;
         this.password = password;
-        this.salt = salt;
         this.role = role;
         this.spots = spots;
     }
 
-    public Users(String contactName, String companyName, String email, String username, String password, String salt, String role, List<Spot> spots) {
+    public Users(String contactName, String companyName, String email, String username, String password, String role, List<Spot> spots) {
         this.contactName = contactName;
         this.companyName = companyName;
         this.email = email;
         this.username = username;
         this.password = password;
-        this.salt = salt;
         this.role = role;
         this.spots = spots;
     }
@@ -162,11 +157,7 @@ public class Users implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
-
+    
     public void setRole(String role) {
         this.role = role;
     }
@@ -177,10 +168,6 @@ public class Users implements Serializable {
 
     public String getPassword() {
         return password;
-    }
-
-    public String getSalt() {
-        return salt;
     }
 
     public String getRole() {
@@ -210,42 +197,7 @@ public class Users implements Serializable {
     @Override
     public String toString() {
         return "jobFair.model.Users[ id=" + id + " ]";
-    }
-    
-    public void setPasswordHashed(@NotEmpty(message="Geen wachtwoord gegeven") String password) {
-        try {
-            if (this.getSalt() == null) {
-                this.createSalt();
-            }
-            this.password = this.hashPassword(password);
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Systeem kon geen hashed wachtwoord creeren");
-        }
-    }
-
-    public String hashPassword(String password) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-        MessageDigest crypt = MessageDigest.getInstance("SHA-1");
-        crypt.reset();
-
-        crypt.update(this.getSalt().getBytes("UTF-8"));
-        crypt.update(password.getBytes("UTF-8"));
-
-        byte[] digest = crypt.digest();
-        return new BigInteger(1, digest).toString(16);
-    }
-    
-    private void createSalt() {
-        SecureRandom random = new SecureRandom();
-        byte seed[] = random.generateSeed(20);
-        this.setSalt(new BigInteger(1, seed).toString(16));
-    }
-    
-    public String generatePassword(){
-       SecureRandom random = new SecureRandom();
-       String clearPass = new BigInteger(50, random).toString(32);
-       this.setPasswordHashed(clearPass);
-       return clearPass;
-   }
+    } 
 
     public void generateUserId(@NotEmpty(message="Er kon geen gebruikersnaam gegenereerd worden.") String user){
        Random random = new Random();
@@ -253,14 +205,4 @@ public class Users implements Serializable {
        this.setUsername(userID.replace(" ", ""));
    }
     
-    public boolean isCorrectPassword(String password) {
-        if(password.isEmpty()){
-            throw new IllegalArgumentException("Geen wachtwoord gegeven");
-        }
-        try {
-            return getPassword().equals(hashPassword(password));
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Systeem kon geen hashed wachtwoord creeren");
-        }
-    }
 }

@@ -64,7 +64,7 @@ public class UsersController {
             return "signupuser";
         } else {
             user.generateUserId(user.getCompanyName());
-            tempPass = user.generatePassword();
+            tempPass = passwordEncode.generatePassword();
             user.setRole(RoleEnum.COMPANY.toString());
             usersService.save(user);
             String succes = "Het bedrijf " + user.getCompanyName() + " is toegevoegd.";

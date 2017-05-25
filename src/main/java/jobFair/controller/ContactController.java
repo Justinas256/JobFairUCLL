@@ -37,7 +37,7 @@ public class ContactController {
     @PostMapping("/contact")
     public String sendEmail(@RequestParam("name") String from, @RequestParam("subject") String subj, @RequestParam("message") String msg, RedirectAttributes redirectAttributes) throws ServletException, IOException {
         List<String> to = usersService.getAllAdminEmails();
-        String scrum = "greta.karal@gmail.com";//"scrumbags.06@gmail.com";
+        String scrum = "jobfairtesting@gmail.com";
         if(!to.contains(scrum)){
                 to.add(scrum);
         }

@@ -35,8 +35,7 @@ public class EmailSender {
     @Autowired
     private EmailDataService emailDataService;
     
-	//private String username = "scrumbags.06", password = "tttttttt";
-    private String username = "greta.karal", password = "melynaspalva";
+        private String username = "jobfairtesting", password = "uclljobfair";
 	private String messageHeader = "<meta charset=\"ISO-8859-1\">";
 	private String indexPage = "http://ipajax.cyclone2.khleuven.be:38033/jobfair_group4/";
 	private Properties properties;

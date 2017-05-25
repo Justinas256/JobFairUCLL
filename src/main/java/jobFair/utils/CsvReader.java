@@ -18,6 +18,7 @@ import jobFair.model.Users;
 import jobFair.service.UsersService;
 
 import javax.mail.MessagingException;
+import org.springframework.beans.factory.annotation.Autowired;
 import validation.UsersValidation;
 
 
@@ -29,7 +30,10 @@ import validation.UsersValidation;
 
 public class CsvReader {
     
-    //private EmailSender emailSender = new EmailSender();
+    @Autowired
+    private PasswordEncode passwordEncode;
+    
+    private EmailSender emailSender = new EmailSender();
     private CsvParserSettings settings;
     private CsvParser parser;
     
@@ -62,7 +66,7 @@ public class CsvReader {
                     user.setEmail(email);
                     user.generateUserId(companyName);
                     user.setRole("COMPANY");
-                    String tempPass = user.generatePassword();
+                    String tempPass = passwordEncode.generatePassword();
 
                     String error = userValidation.validateUser(user);
                     if( error != null) {
@@ -80,13 +84,13 @@ public class CsvReader {
                 service.addUsers(users);
             }
 
-            /*
+            
             try {
                 emailSender.sendNewCompanyMail(mailList);
             } catch (MessagingException e) {
                 throw new MessagingException(e.getMessage(), e);
             }
-            */
+            
         }
     }   
 
