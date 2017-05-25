@@ -54,16 +54,15 @@ public class FillDataController {
         spotService.save(new Spot("!", 2,3,true,"cool", null));
         spotService.save(new Spot("2", 1,1,false,"oh yeah!", null));
         
-        usersService.save(new Users("Name", "Company", "greta.karal@gmail.com", "user", "pass", "", "COMPANY", null));
+        usersService.save(new Users("Name", "Company", "jobfairtesting@gmail.com", "user", "pass", "COMPANY", null));
    
         Users user = new Users();
         user.setPassword(passwordEncode.encodePassword("admin"));
         user.setRole("ADMIN");
         user.setUsername("admin");
-        user.setSalt("");
         user.setCompanyName("admin");
         user.setContactName("admin");
-        user.setEmail("greta.karal@gmail.com");
+        user.setEmail("jobfairtesting@gmail.com");
         usersService.save(user);
         
         jobFairDataService.save(new JobFairData("Job fair", "2017","", null));
@@ -72,10 +71,9 @@ public class FillDataController {
         user.setPassword(passwordEncode.encodePassword("company"));
         user.setRole("COMPANY");
         user.setUsername("company");
-        user.setSalt("");
         user.setCompanyName("company name");
         user.setContactName("contact name");
-        user.setEmail("greta.karal@gmail.com");
+        user.setEmail("jobfairtesting@gmail.com");
         usersService.save(user);
         
         Spot spot = new Spot();

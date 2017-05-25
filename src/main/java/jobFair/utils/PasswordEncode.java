@@ -5,6 +5,8 @@
  */
 package jobFair.utils;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import jobFair.model.Users;
 import jobFair.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,5 +67,11 @@ public class PasswordEncode {
         }
         return passwordMatch(password,userPassword);
     }
+    
+    public String generatePassword(){
+       SecureRandom random = new SecureRandom();
+       String clearPass = new BigInteger(50, random).toString(32);
+       return encodePassword(clearPass);
+   }
     
 }

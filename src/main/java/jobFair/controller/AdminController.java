@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 import javax.mail.MessagingException;
 import javax.servlet.ServletException;
+import jobFair.utils.PasswordEncode;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
@@ -30,9 +31,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  */
 @Controller
 public class AdminController {
+    
+    @Autowired
+    private PasswordEncode passwordEncode;
+    
     @Autowired
     private UsersService usersService;
-    
+
     @GetMapping("/signupadmin")
     public ModelAndView signUpAdmin() {
         ModelAndView modelAndView = new ModelAndView("addadmin");
@@ -47,7 +52,7 @@ public class AdminController {
             return "addadmin";
         } else {      
             user.setRole("ADMIN");
-            tempPass = user.generatePassword();
+            tempPass = passwordEncode.generatePassword();
             user.setCompanyName("admin"); //delete this after validation
             usersService.save(user);
             String success = "De beheerder " + user.getUsername()+ " is toegevoegd.";
