@@ -61,7 +61,11 @@ public class MapController {
     }
     
     @GetMapping("/maps")
-    public String maps(Model model) {
+    public String maps(Model model, RedirectAttributes redirectAttributes) {
+        if(mapService.findAll().isEmpty()){
+            redirectAttributes.addFlashAttribute("errors", "Application does not have map. Please upload map."); 
+            return "redirect:/admin";
+        }
         model.addAttribute("maps", mapService.findAll());
         return "maps";
     }
